@@ -1,0 +1,27 @@
+Owners:
+-Fairly sure this class is done. (Make changes if needed later.)
+
+CommandLine_Interface:
+-Add property is done.
+-Quit is done.
+-Search is currently a WIP.
+
+Property:
+-Done a good bit, doesn't track time.
+-The 7% compounding penalty when unpaid isn't done or started. 
+
+Address:
+-Done, unless changes needed.
+
+CVS_Storing:
+-Add method works when file.csv is in the same directory.
+-Read method doesn't read from CSV File correctly, needs work.
+
+StoreProperty:
+-Done, again unless changes need to be made.
+
+Properties:
+-Done, unless changes etc.
+
+GUI:
+-Not started whatsoever.
