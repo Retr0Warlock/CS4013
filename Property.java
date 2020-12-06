@@ -1,26 +1,45 @@
+import java.io.InvalidObjectException;
+import java.util.Arrays;
+
 public class Property {
-    private Owners owners;
+    private Owner owner;
     private Address address;
     private String eircode;
-    private double MarketVal;
+    private double marketVal;
     private String category;
-    private boolean privateRes;
+    private boolean isPrivateRes;
     private double propertyTax;
 
     /* Constructs a Product Object */
-    public Property(Owners owners, Address address, String eircode, double MarketVal, String category, boolean privateRes) {
-        this.owners = owners;
+    public Property(Owner owner, Address address, String eircode, double marketVal, String category, boolean isPrivateRes) throws InvalidObjectException {
+        this.owner = owner;
         this.address = address;
         this.eircode = eircode;
-        this.MarketVal = MarketVal;
+        this.marketVal = marketVal;
         this.category = category;
-        this.privateRes = privateRes;
-        calcPropertyTax();
+        this.isPrivateRes = isPrivateRes;
+
+        if(toString().split(",").length!=10||toString().contains("\\"))
+            throw new InvalidObjectException("Data fields must not contain commas or backslashes");
     }
 
-    /* Returns owners */
-    public Owners getOwners() {
-        return owners;
+    /**
+     * Constructor for a String in the same format as the toString method.
+     * @param o String "owner,4 line address comma separated,eircode,marketvalue,catergory,is property a private residence(true/false)"
+     */
+    public Property(String o){
+        String[] oArr = o.split(",");
+        this.owner = new Owner(oArr[0]);
+        this.address = new Address(Arrays.copyOfRange(oArr,1,6));
+        this.eircode = oArr[7];
+        this.marketVal = Double.parseDouble(oArr[8]);
+        this.category = oArr[9];
+        this.isPrivateRes = Boolean.parseBoolean(oArr[10]);
+    }
+
+    /* Returns owner */
+    public Owner getOwner() {
+        return owner;
     }
 
     /* Returns address */
@@ -35,7 +54,7 @@ public class Property {
 
     /* Returns MarketVal */
     public double getMarketVal() {
-        return MarketVal;
+        return marketVal;
     }
 
     /* Returns category */
@@ -45,7 +64,7 @@ public class Property {
 
     /* Returns privateResidence */
     public boolean isPrivateRes() {
-        return privateRes;
+        return isPrivateRes;
     }
 
     /* Returns propertyTax */
@@ -56,7 +75,7 @@ public class Property {
     /* Calculates the property tax */
     private void calcPropertyTax(){
         propertyTax = propertyTax + 100 + Rates() + Categories();
-        if(!privateRes){
+        if(!isPrivateRes){
             propertyTax = propertyTax  + 100;
         }
     }
@@ -67,11 +86,11 @@ public class Property {
         int[] Values = {150_000,400_000,650_000};
         double[] Rates = {0,0.01,0.02,0.04};
         for(int i = 0; i < Values.length;i++){
-            if(MarketVal <= Values[i]){
-                PropertyTax = PropertyTax + MarketVal*Rates[i]/100;
+            if(marketVal <= Values[i]){
+                PropertyTax = PropertyTax + marketVal *Rates[i]/100;
                 return PropertyTax;
-            }else if(MarketVal > 650000){
-                PropertyTax = PropertyTax + MarketVal*0.04/100;
+            }else if(marketVal > 650000){
+                PropertyTax = PropertyTax + marketVal *0.04/100;
                 return PropertyTax;
             }
         }
@@ -93,6 +112,6 @@ public class Property {
 
     @Override
     public String toString() {
-        return owners.toString() + " " + address.toString() + " " + eircode + " " + MarketVal + " " + category + " " + propertyTax;
+        return owner.toString() + "," + address.toString() + "," + eircode + "," + marketVal + "," + category + "," + isPrivateRes;
     }
 }

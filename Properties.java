@@ -16,10 +16,10 @@ public class Properties {
         }
     }
 
-    public ArrayList<Property> searchByName(Owners owner){
+    public ArrayList<Property> searchByName(Owner owner){
         ArrayList<Property> byName = new ArrayList<>();
         for(Property prop : properties){
-            if(prop.getOwners().equal(owner)){
+            if(prop.getOwner().equal(owner)){
                 byName.add(prop);
             }
         }

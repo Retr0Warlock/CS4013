@@ -1,4 +1,4 @@
- 
+
 
 public class Address {
     String firstLine;
@@ -15,12 +15,20 @@ public class Address {
         this.country = country;
     }
 
-    public Address(String firstLine,String city, String county, String country) {
-        this(firstLine,"",city,county,country);
+    public Address(String firstLine, String city, String county, String country) {
+        this(firstLine, "", city, county, country);
     }
 
-    public Address(String firstLine, String city, String county){
-        this(firstLine,city,county,"Ireland");
+    public Address(String firstLine, String city, String county) {
+        this(firstLine, city, county, "Ireland");
+    }
+
+    public Address(String[] o) {
+        this.firstLine=o[0];
+        this.secondLine=o[1];
+        this.city=o[2];
+        this.county=o[3];
+        this.country=o[4];
     }
 
     public String getFirstLine() {
@@ -45,10 +53,6 @@ public class Address {
 
     @Override
     public String toString() {
-        if(secondLine.equals("")){
-            return firstLine + " " + city + " " + county + " " + country;
-        }else {
-            return firstLine + " " + secondLine + " " + city + " " + county + " " + country;
-        }
+        return firstLine + "," + secondLine + "," + city + "," + county + "," + country;
     }
 }

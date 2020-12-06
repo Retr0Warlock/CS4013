@@ -1,9 +1,9 @@
  
 
-public class Owners {
+public class Owner {
     private String Fullname;
 
-    public Owners(String Fullname) {
+    public Owner(String Fullname) {
         this.Fullname = Fullname;
     }
 
@@ -11,7 +11,7 @@ public class Owners {
         return Fullname;
     }
 
-    public boolean equal(Owners other){
+    public boolean equal(Owner other){
         if(other.getFullname().compareToIgnoreCase(Fullname) == 0){
             return true;
         }else {

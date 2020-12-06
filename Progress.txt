@@ -1,4 +1,5 @@
-Owners:
+Owner:
+Only one owner needed, since tax is payed by one person
 -Fairly sure this class is done. (Make changes if needed later.)
 
 CommandLine_Interface:
@@ -8,7 +9,7 @@ CommandLine_Interface:
 
 Property:
 -Done a good bit, doesn't track time.
--The 7% compounding penalty when unpaid isn't done or started. 
+-The 7% compounding penalty when unpaid isn't done or started.
 
 Address:
 -Done, unless changes needed.

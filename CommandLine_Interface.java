@@ -19,7 +19,7 @@ public class CommandLine_Interface {
                     System.out.println("FullName: ");
                     String Fullname = Line.nextLine();
                     ArrayList<Property> name = new ArrayList<>();
-                    name = properties.searchByName(new Owners(Fullname));
+                    name = properties.searchByName(new Owner(Fullname));
                     for(Property prop : name){
                         System.out.println(prop);
                     }

@@ -1,3 +1,4 @@
+import java.io.InvalidObjectException;
 import java.util.Scanner;
 public class StoreProperty {
     public void addPropertyValues(){
@@ -44,7 +45,12 @@ public class StoreProperty {
         }
         
         //Creating a Property and adding it to the file.
-        Property newProperty = new Property(new Owners(Fullname),new Address(firstLine,secondLine,city,county,country),eircode,MarketValue,category,privateRes);
+        Property newProperty = null;
+        try {
+            newProperty = new Property(new Owner(Fullname),new Address(firstLine,secondLine,city,county,country),eircode,MarketValue,category,privateRes);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
         CSV_Storing Write = new CSV_Storing();
         Write.add(newProperty);
         Properties TempStorage = new Properties();
