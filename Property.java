@@ -34,10 +34,10 @@ public class Property {
         String[] oArr = o.split(",");
         this.owner = new Owner(oArr[0]);
         this.address = new Address(Arrays.copyOfRange(oArr, 1, 6));
-        this.eircode = oArr[7];
-        this.marketVal = Double.parseDouble(oArr[8]);
-        this.category = oArr[9];
-        this.isPrivateRes = Boolean.parseBoolean(oArr[10]);
+        this.eircode = oArr[6];
+        this.marketVal = Double.parseDouble(oArr[7]);
+        this.category = oArr[8];
+        this.isPrivateRes = Boolean.parseBoolean(oArr[9]);
     }
 
     /* Returns owner */

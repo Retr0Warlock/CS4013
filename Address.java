@@ -24,11 +24,11 @@ public class Address {
     }
 
     public Address(String[] o) {
-        this.firstLine=o[0];
-        this.secondLine=o[1];
-        this.city=o[2];
-        this.county=o[3];
-        this.country=o[4];
+        this.firstLine = o[0];
+        this.secondLine = o[1];
+        this.city = o[2];
+        this.county = o[3];
+        this.country = o[4];
     }
 
     public String getFirstLine() {
