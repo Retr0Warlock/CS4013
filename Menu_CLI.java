@@ -12,12 +12,11 @@ public class Menu_CLI {
     }
 
     public void run() {
-
         Scanner in = new Scanner(System.in);
         boolean quit = false;
         while (!quit) {
             System.out.println("Main menu");
-            System.out.println("Select user type: 1.Owner  2.Admin 3.Quit");
+            System.out.println("Select user type: 1.Owner 2.Admin 3.Quit");
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
@@ -42,10 +41,6 @@ public class Menu_CLI {
             try {
                 switch (Integer.parseInt(choice)) {
                     case 1:
-//                        Property a = createProperty();
-//                        filer.add(a);
-                        for(Property abc:filer.read())
-                            filer.add(abc);
                         break;
                     case 2: //
                         break;
@@ -129,25 +124,27 @@ public class Menu_CLI {
     public Property createProperty() throws InvalidObjectException {
         Scanner in = new Scanner(System.in);
 
-        System.out.print("Fullname: ");
-        String fullName = in.nextLine();
-
-        System.out.print("\t\t\tAddress \nFirstLine: ");
-        String firstLine = in.nextLine();
-        System.out.print("SecondLine: ");
-        String secondLine = in.nextLine();
-        System.out.print("City: ");
-        String city = in.nextLine();
-        System.out.print("County: ");
-        String county = in.nextLine();
-        System.out.print("Country: ");
-        String country = in.nextLine();
-        Address address = new Address(firstLine, secondLine, city, county, country);
-
-        System.out.print("Eircode: ");
-        String eircode = in.nextLine();
-
         try {
+            System.out.print("Owners(comma separated): ");
+            ArrayList<Owner> owners = new ArrayList<Owner>();
+            for (String str : in.nextLine().split(","))
+                owners.add(new Owner(str));
+
+            System.out.print("\t\t\tAddress \nFirstLine: ");
+            String firstLine = in.nextLine();
+            System.out.print("SecondLine: ");
+            String secondLine = in.nextLine();
+            System.out.print("City: ");
+            String city = in.nextLine();
+            System.out.print("County: ");
+            String county = in.nextLine();
+            System.out.print("Country: ");
+            String country = in.nextLine();
+            Address address = new Address(firstLine, secondLine, city, county, country);
+
+            System.out.print("Eircode: ");
+            String eircode = in.nextLine();
+
             System.out.print("Market Value: ");
             double MarketValue = in.nextDouble();
             in.nextLine();
@@ -163,11 +160,13 @@ public class Menu_CLI {
             String privateResidence = in.nextLine();
             boolean privateRes = privateResidence.equalsIgnoreCase("Y");
 
-            return new Property(new Owner(fullName), address, eircode, MarketValue, category, privateRes);
+            return new Property(owners, address, eircode, MarketValue, category, privateRes);
         } catch (ArrayIndexOutOfBoundsException a) {
             throw new InvalidObjectException("Invalid category choice");
         } catch (InputMismatchException a) {
             throw new InvalidObjectException("Market value must be a number");
+        } catch (Exception a) {
+            throw new InvalidObjectException("Invalid property");
         }
     }
 }

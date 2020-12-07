@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Used for reading, writing, searching and general processing of the csv files.
  */
 public class PropertyFiler {
-    private final String propertyFileName = "properties.csv";
+    private final String file = "properties.csv";
 
     /**
      * Logs a String representation of a Property to file
@@ -18,7 +18,7 @@ public class PropertyFiler {
             if (prop.equals(prop2))
                 return;
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(propertyFileName, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
             writer.write(prop.toString() + "\n");
             writer.close();
         } catch (IOException e) {
@@ -34,7 +34,7 @@ public class PropertyFiler {
     public ArrayList<Property> read() {
         ArrayList<Property> propertyList = new ArrayList<Property>();
         try {
-            Scanner fileRead = new Scanner(new File(propertyFileName));
+            Scanner fileRead = new Scanner(new File(file));
             while (fileRead.hasNextLine()) {
                 propertyList.add(new Property(fileRead.nextLine()));
             }

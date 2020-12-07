@@ -1,14 +1,14 @@
  
 
 public class Owner {
-    private String Fullname;
+    private String fullName;
 
-    public Owner(String Fullname) {
-        this.Fullname = Fullname;
+    public Owner(String fullName) {
+        this.fullName = fullName.trim();
     }
 
-    public String getFullname() {
-        return Fullname;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
@@ -18,6 +18,6 @@ public class Owner {
     
     @Override
     public String toString() {
-        return Fullname;
+        return fullName;
     }
 }
