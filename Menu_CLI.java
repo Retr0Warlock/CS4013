@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu_CLI {
+    private final PropertyFiler filer = new PropertyFiler();
 
     public static void main(String[] args) {
         Menu_CLI a = new Menu_CLI();
@@ -12,7 +13,6 @@ public class Menu_CLI {
 
     public void run() {
 
-        Properties properties = new Properties();
         Scanner in = new Scanner(System.in);
         boolean quit = false;
         while (!quit) {
@@ -42,8 +42,10 @@ public class Menu_CLI {
             try {
                 switch (Integer.parseInt(choice)) {
                     case 1:
-                        Property a = createProperty();
-                        System.out.println(a.toString());
+//                        Property a = createProperty();
+//                        filer.add(a);
+                        for(Property abc:filer.read())
+                            filer.add(abc);
                         break;
                     case 2: //
                         break;
@@ -55,8 +57,7 @@ public class Menu_CLI {
                         quit = true;
                         break;
                 }
-            } catch (
-                    Exception e) {
+            } catch (Exception e) {
                 System.out.println("Please enter valid input");
             }
         }
@@ -71,7 +72,7 @@ public class Menu_CLI {
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
-                    case 1 -> CSV_Storing.add(createProperty());
+                    case 1 -> filer.add(createProperty());
                     case 2 -> ownerSearch();
                     case 3 -> quit = true;
                 }

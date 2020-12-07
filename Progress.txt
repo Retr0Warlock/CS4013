@@ -1,31 +1,27 @@
+structure is set up so no major changes should happen
+
 Owner:
-Only one owner needed, since tax is payed by one person
 -Done
 
 Menu_CLI:
 -Add property is done.
 -Quit is done.
 -Layout is somewhat set out.
--Search is currently a WIP.
+-Search is currently a WIP.(Searching can be done by calling PropertyFiler.read() and using the objects)
 
 Property:
 -Done
+-toString takes form "owner,firstline,secondline,county,country,eircode,marketvalue,category,privateRes?,propertytaxyear,no.of payments,payments,taxforthatyear,...
+
+
+ProperyFiler:
+-Search function and others need to be added
 
 Address:
--Done, unless changes needed.
-
-CVS_Storing:
--Add method works, checks if duplicate before adding (maybe should check if address is equal aswell)
--Read method works.
-
-StoreProperty:
-I don't think this one is needed, maybe merge with CSV_Storing into FileProccessing.java?
-
-Properties:
--Done, unless changes etc.
+-Done
 
 Menu_GUI:
 -Not started whatsoever.
 
 PropertyTax:
--Only copied what was originally in Property.java , haven't checked if working so the 7% compound still doesn't work
+-Calculating tax could be cleaned up + compounding I think doesn't work

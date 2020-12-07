@@ -1,6 +1,8 @@
 *Completing the menu options in Menu_CLI
 	after these are done we can just use the same format for the gui just with buttons and event handling.
 
-*Figuring out how to handle tax data, I might add second file tax.csv that hold tax data of all years of the same line as file.csv
+*Cleaning up PropertyTax.calculate();
 
-*Big task is for proccesing the data for the stats needed in menu=>admin=>stats, should be held in CSV_Storing (or another class) so both gui and cli can access
+*Big task is for processing the data for the stats needed in menu=>admin=>stats, should be held in PropertyFiler so both gui and cli can access
+
+Note: processing data is easier done by converting properties back into objects using the constructor provided instead of by text

@@ -2,20 +2,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CSV_Storing {
-    public static final String file = "file.csv";
+/**
+ * Used for reading, writing, searching and general processing of the csv files.
+ */
+public class PropertyFiler {
+    private final String propertyFileName = "properties.csv";
 
     /**
      * Logs a String representation of a Property to file
      *
      * @param prop the property to be logged to file
      */
-    public static void add(Property prop) {
-        for(Property prop2:read())
-            if(prop.equals(prop2))
+    public void add(Property prop) {
+        for (Property prop2 : read()) //if duplicate property already in file
+            if (prop.equals(prop2))
                 return;
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(propertyFileName, true));
             writer.write(prop.toString() + "\n");
             writer.close();
         } catch (IOException e) {
@@ -28,10 +31,10 @@ public class CSV_Storing {
      *
      * @return ArrayList of properties on file
      */
-    public static ArrayList<Property> read() {
+    public ArrayList<Property> read() {
         ArrayList<Property> propertyList = new ArrayList<Property>();
         try {
-            Scanner fileRead = new Scanner(new File(file));
+            Scanner fileRead = new Scanner(new File(propertyFileName));
             while (fileRead.hasNextLine()) {
                 propertyList.add(new Property(fileRead.nextLine()));
             }

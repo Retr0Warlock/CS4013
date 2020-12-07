@@ -1,16 +1,31 @@
+import java.time.Year;
+import java.util.ArrayList;
+
 /**
  * Used for calculating property tax of a given property.
  */
 public class PropertyTax {
-    private Property property;
+    private double tax;
+    private Year year;
+    private ArrayList<Double> payments;
 
-    public PropertyTax(Property o) {
-        this.property = o;
+    public PropertyTax(Year year, double tax) {
+        this.tax = tax;
+        this.year = year;
+        payments = new ArrayList<Double>();
     }
 
-    public double calculate() {
+    public PropertyTax(Year year, String[] subArr, double tax) {
+        this.year = year;
+        this.payments = new ArrayList<Double>();
+        for (String payment : subArr)
+            payments.add(Double.parseDouble(payment));
+        this.tax = tax;
+    }
+
+    public static double calculate(Property property) {
         double propertyTax = 0;
-        propertyTax = propertyTax + 100 + rates() + categories();
+        propertyTax = propertyTax + 100 + rates(property) + categories(property);
         if (!property.isPrivateRes()) {
             propertyTax = propertyTax + 100;
         }
@@ -18,7 +33,7 @@ public class PropertyTax {
     }
 
     /* Calculates rate for property tax */
-    private double rates() {
+    private static double rates(Property property) {
         double PropertyTax = 0;
         int[] values = {150_000, 400_000, 650_000};
         double[] rates = {0, 0.01, 0.02, 0.04};
@@ -35,7 +50,7 @@ public class PropertyTax {
     }
 
     /* Calculates property tax based off of category */
-    private double categories() {
+    private static double categories(Property property) {
         double PropertyTax = 0;
         String[] categories = {"City", "Large Town", "Small Town", "Village", "Countryside"};
         int[] charge = {100, 80, 60, 50, 25};
@@ -47,4 +62,27 @@ public class PropertyTax {
         return PropertyTax;
     }
 
+    public void makePayment(double payment) throws IllegalArgumentException {
+        if (payment > tax - getPaymentTotal())
+            throw new IllegalArgumentException("Payment is over total due");
+        if (payment < 0)
+            throw new IllegalArgumentException("Payment must be more than 0");
+        payments.add(payment);
+    }
+
+    public double getPaymentTotal() {
+        double result = 0;
+        for (double payment : payments)
+            result += payment;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String result = year.toString() + "," + payments.size() + ",";
+        for (double payment : payments)
+            result += payment + ",";
+        result += tax;
+        return result;
+    }
 }

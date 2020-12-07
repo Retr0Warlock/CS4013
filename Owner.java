@@ -11,12 +11,9 @@ public class Owner {
         return Fullname;
     }
 
-    public boolean equal(Owner other){
-        if(other.getFullname().compareToIgnoreCase(Fullname) == 0){
-            return true;
-        }else {
-            return false;
-        }
+    @Override
+    public boolean equals(Object other){
+        return(toString().equalsIgnoreCase(other.toString()));
     }
     
     @Override
