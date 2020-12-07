@@ -7,6 +7,7 @@ public class Property {
     private String eircode;
     private double marketVal;
     private String category;
+    public static final String[] categoryList={"City","Large town","Small town","Village","Countryside"};
     private boolean isPrivateRes;
     private double propertyTax;
     private PropertyTax taxRule;

@@ -1,28 +1,31 @@
 Owner:
 Only one owner needed, since tax is payed by one person
--Fairly sure this class is done. (Make changes if needed later.)
+-Done
 
-CommandLine_Interface:
+Menu_CLI:
 -Add property is done.
 -Quit is done.
+-Layout is somewhat set out.
 -Search is currently a WIP.
 
 Property:
--Done a good bit, doesn't track time.
--The 7% compounding penalty when unpaid isn't done or started.
+-Done
 
 Address:
 -Done, unless changes needed.
 
 CVS_Storing:
--Add method works when file.csv is in the same directory.
--Read method doesn't read from CSV File correctly, needs work.
+-Add method works, checks if duplicate before adding (maybe should check if address is equal aswell)
+-Read method works.
 
 StoreProperty:
--Done, again unless changes need to be made.
+I don't think this one is needed, maybe merge with CSV_Storing into FileProccessing.java?
 
 Properties:
 -Done, unless changes etc.
 
-GUI:
+Menu_GUI:
 -Not started whatsoever.
+
+PropertyTax:
+-Only copied what was originally in Property.java , haven't checked if working so the 7% compound still doesn't work

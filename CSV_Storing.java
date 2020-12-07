@@ -3,14 +3,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CSV_Storing {
-    private String file = "file.csv";
+    public static final String file = "file.csv";
 
     /**
      * Logs a String representation of a Property to file
      *
      * @param prop the property to be logged to file
      */
-    public void add(Property prop) {
+    public static void add(Property prop) {
+        for(Property prop2:read())
+            if(prop.equals(prop2))
+                return;
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
             writer.write(prop.toString() + "\n");
@@ -25,7 +28,7 @@ public class CSV_Storing {
      *
      * @return ArrayList of properties on file
      */
-    public ArrayList<Property> read() {
+    public static ArrayList<Property> read() {
         ArrayList<Property> propertyList = new ArrayList<Property>();
         try {
             Scanner fileRead = new Scanner(new File(file));
