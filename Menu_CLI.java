@@ -36,19 +36,20 @@ public class Menu_CLI {
         boolean quit = false;
         while (!quit) {
             System.out.println("Admin Tax Menu");
-            System.out.println("1.Get data for a property 2. Get data for an owner 3.Check tax overdue 4.Get general tax statistics 5.Quit");
+            System.out.println("1.Search Tax Data 2.Overdue Tax 3.General Tax Statistics 4.Quit");
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
                     case 1:
+                        //Search by:  filer.search(SearchType)    Address/Owner, if searching by eircode: for(Property prob:filer.read()) if(prop.getAddress.equals(SearchAddress)
                         break;
-                    case 2: //
+                    case 2:
+                        //
                         break;
                     case 3:
+                        //taxStatistics();  total tax paid: result+=filer.getTax.getPaymentTotal()
                         break;
-                    case 4: //taxStats()
-                        break;
-                    case 5:
+                    case 4:
                         quit = true;
                         break;
                 }
@@ -63,12 +64,12 @@ public class Menu_CLI {
         boolean quit = false;
         while (!quit) {
             System.out.println("\tOwner Menu");
-            System.out.println("1. Add Property 2. Search 3. Quit");
+            System.out.println("1. Register property 2. My Properties 3. Quit");
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
                     case 1 -> filer.add(createProperty());
-                    case 2 -> ownerSearch();
+                    case 2 -> myPropertiesMenu();
                     case 3 -> quit = true;
                 }
             } catch (Exception a) {
@@ -77,53 +78,24 @@ public class Menu_CLI {
         }
     }
 
-    public void ownerSearch() {
-        System.out.println("Search By : A) Name B) Address C) Eircode D) Market Value " + "E) Category F) Private Residence");
+    public void myPropertiesMenu() {
         Scanner in = new Scanner(System.in);
-        String searchChoice = in.nextLine();
-        in.nextLine();
-        if (searchChoice.equalsIgnoreCase("A")) {
-            System.out.println("FullName: ");
-            String Fullname = in.nextLine();
-            ArrayList<Property> name = new ArrayList<>();
-//                name = properties.searchByName(new Owner(Fullname));
-            for (Property prop : name) {
-                System.out.println(prop);
+        boolean quit = false;
+        while (!quit) {
+            System.out.println("Enter your name: ");
+            String choice = in.nextLine();
+            try {
+                //Displays all properties belonging to choice, throws Exception if not (Call filer.search(new Owner(ownerName)))
+                //Then allows property to be selected to view more info/pay tax(another method propbably)
+                //and another options for viewing all owed property tax(a year or all time)
+            } catch (Exception a) {
+                System.out.println("No Properties found in your name");
             }
-        } else if (searchChoice.equalsIgnoreCase("B")) {
-            System.out.println("Address \n FirstLine: ");
-            String firstLine = in.nextLine();
-            System.out.println("SecondLine: ");
-            String secondLine = in.nextLine();
-            System.out.println("City ");
-            String city = in.nextLine();
-            System.out.println("County: ");
-            String county = in.nextLine();
-            System.out.println("Country: ");
-            String country = in.nextLine();
-
-        } else if (searchChoice.equalsIgnoreCase("C")) {
-            System.out.println("Eircode: ");
-            String Eircode = in.nextLine();
-
-        } else if (searchChoice.equalsIgnoreCase("D")) {
-            System.out.println("Market Value: ");
-            double MarketValue = in.nextDouble();
-
-        } else if (searchChoice.equalsIgnoreCase("E")) {
-            System.out.println("Catagory: ");
-            String Catagory = in.nextLine();
-
-        } else if (searchChoice.equalsIgnoreCase("F")) {
-            System.out.println("Private Residence: (Y/N)");
-            String privateResidence = in.nextLine();
         }
     }
 
-
     public Property createProperty() throws InvalidObjectException {
         Scanner in = new Scanner(System.in);
-
         try {
             System.out.print("Owners(comma separated): ");
             ArrayList<Owner> owners = new ArrayList<Owner>();

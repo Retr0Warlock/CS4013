@@ -1,8 +1,7 @@
+Note: when processing use PropertyFiler methods to just take all properties as objects instead of text from file
+
 *Completing the menu options in Menu_CLI
 	after these are done we can just use the same format for the gui just with buttons and event handling.
+	Properties and the tax data may need more accessor methods
 
 *Cleaning up PropertyTax.calculate();
-
-*Big task is for processing the data for the stats needed in menu=>admin=>stats, should be held in PropertyFiler so both gui and cli can access
-
-Note: processing data is easier done by converting properties back into objects using the constructor provided instead of by text

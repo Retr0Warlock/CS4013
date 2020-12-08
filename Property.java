@@ -47,6 +47,14 @@ public class Property {
         }
     }
 
+    public ArrayList<Owner> getOwners() {
+        return owners;
+    }
+
+    public ArrayList<PropertyTax> getPropertyTaxes() {
+        return propertyTaxes;
+    }
+
     /* Returns address */
     public Address getAddress() {
         return address;

@@ -6,15 +6,16 @@ Owner:
 Menu_CLI:
 -Add property is done.
 -Quit is done.
--Layout is somewhat set out.
+-Layout is mainly set out
 -Search is currently a WIP.(Searching can be done by calling PropertyFiler.read() and using the objects)
+-Admin menu is untouched
 
 Property:
 -Done
--toString takes form "owner,firstline,secondline,county,country,eircode,marketvalue,category,privateRes?,propertytaxyear,no.of payments,payments,taxforthatyear,...
+-toString takes form "no.ofOwners,owner,firstline,secondline,county,country,eircode,marketvalue,category,privateRes?,propertytaxyear,no.of payments,payments,taxforthatyear,...
 
 
-ProperyFiler:
+PropertyFiler:
 -Search function and others need to be added
 
 Address:
@@ -24,4 +25,4 @@ Menu_GUI:
 -Not started whatsoever.
 
 PropertyTax:
--Calculating tax could be cleaned up + compounding I think doesn't work
+-Calculating tax could be cleaned up + compounding doesn't work
