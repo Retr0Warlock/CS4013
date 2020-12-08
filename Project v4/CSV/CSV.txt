@@ -1,0 +1,13 @@
+John Murphy,Findlater_Street Circular_Road Dublin Dublin Ireland,D07 RX08,150000,City,true
+John Murphy,21_Fingal_Place Dublin7 Dublin Dublin Ireland,D07 X6H7,250000,City,false
+John Murphy,80_Aidan_Park Ballycasey Shannon Clare Ireland,V94 K274,70000,Large Town,false
+Mark Walsh,Deerpark_Farm Deerpark Clonlara Clare Ireland,V94 P22D,80000,Countryside,true
+Mark Walsh,46_Ocean_Wave Salthill Galway Galway Ireland,H12 F77C,250000,City,false
+Sarah Ryan,Brigadoon Corhoogan Cavan Cavan Ireland,H12 KF57,100000,Village,true
+Sarah Ryan,Fraughts Doonally Sligo Sligo Ireland,F91 XA39,150000,Small town,false
+Sarah Ryan,Aghanahown Ardagh Longford Longford Ireland,N39 YK20,400000,Countryside,true
+Pat Murphy,Drumbraun Ardagh Longford Longford Ireland,N39 XV83,100000,Countryside,false
+Pat Murphy,17_Oaklawns Clogherboy_Park Navan Meath Ireland,C15 X3H0,175000,Large Town,true
+James Kelly,8_Acorn_Way Wheaton_Hall Drogheda Louth Ireland,A92 WPY9,50000,City,false
+James Kelly,Moskeigh Templemartin Bandon Cork Ireland,P72 FK75,200000,Village,true
+Matt Ryan,6 Royal Canal Bank Dublin 7 Dublin Ireland,D07 WF8C,300000.0,City,true

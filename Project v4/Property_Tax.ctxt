@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Property_Tax
+comment1.params=
+comment1.target=Property_Tax()
+comment10.params=year
+comment10.target=java.util.ArrayList\ overdue(int)
+comment11.params=year\ routing
+comment11.target=java.util.ArrayList\ overdue(int,\ java.lang.String)
+comment12.params=
+comment12.target=void\ readCSV()
+comment2.params=routing
+comment2.target=double\ totalTax(java.lang.String)
+comment3.params=routing
+comment3.target=double\ averageTax(java.lang.String)
+comment4.params=p
+comment4.target=void\ addPropertyTax(Property)
+comment5.params=eircode\ year\ propTax\ s
+comment5.target=void\ writeToCSV(java.lang.String,\ int,\ double,\ java.lang.String)
+comment6.params=p
+comment6.target=java.util.ArrayList\ findByProperty(Property)
+comment7.params=routing\ total
+comment7.target=double\ totalAverage(java.lang.String,\ boolean)
+comment8.params=routing
+comment8.target=double\ taxPercent(java.lang.String)
+comment9.params=routing
+comment9.target=java.util.ArrayList\ findByRouting(java.lang.String)
+numComments=13

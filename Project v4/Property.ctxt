@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Property
+comment1.params=owners\ address\ eircode\ MarketVal\ category\ privateRes
+comment1.target=Property(Owner,\ java.lang.String,\ java.lang.String,\ double,\ java.lang.String,\ boolean)
+comment10.params=
+comment10.target=double\ Rates()
+comment11.params=
+comment11.target=double\ Categories()
+comment12.params=
+comment12.target=java.lang.String\ toString()
+comment2.params=
+comment2.target=Owner\ getOwner()
+comment3.params=
+comment3.target=java.lang.String\ getAddress()
+comment4.params=
+comment4.target=java.lang.String\ getEircode()
+comment5.params=
+comment5.target=double\ getMarketVal()
+comment6.params=
+comment6.target=java.lang.String\ getCategory()
+comment7.params=
+comment7.target=boolean\ isPrivateRes()
+comment8.params=
+comment8.target=double\ getPropertyTax()
+comment9.params=
+comment9.target=void\ calcPropertyTax()
+numComments=13

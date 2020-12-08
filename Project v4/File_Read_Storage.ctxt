@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=File_Read_Storage
+comment1.params=p
+comment1.target=void\ add(Property)
+comment1.text=Adds\ property\ data\ to\ CSV.txt\ file
+comment2.params=
+comment2.target=Properties\ read()
+comment2.text=Reads\ all\ data\ in\ the\ CSV.txt\ file\ and\ returns\ it\ as\ an\ object\ of\ type\ properties
+numComments=3

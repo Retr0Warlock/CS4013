@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Owner
+comment1.params=firstname\ lastname
+comment1.target=Owner(java.lang.String,\ java.lang.String)
+comment1.text=Initializes\ the\ Owner\ class
+comment2.params=
+comment2.target=java.lang.String\ getFirstname()
+comment2.text=Returns\ firstname\ @return
+comment3.params=
+comment3.target=java.lang.String\ getLastname()
+comment3.text=Returns\ lastname
+comment4.params=other
+comment4.target=boolean\ equal(Owner)
+comment4.text=Checks\ to\ see\ if\ two\ Owner\ objects\ are\ equal
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6
