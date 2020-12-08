@@ -1,7 +1,7 @@
 import java.io.*;
 public class File_Read_Storage {
     private String file = "CSV/CSV.txt";
-    
+     private final String csv = "CSV/properties.csv";
     /* Adds property data to CSV.txt file */
     public void add(Property p){
         try {
@@ -16,6 +16,13 @@ public class File_Read_Storage {
 
         }catch (Exception E){
             System.out.println("Error writing to csv");
+        }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(csv, true));
+            writer.write(p.toString() + "\n\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -40,4 +47,3 @@ public class File_Read_Storage {
         return prop;
     }
 }
-//volvunt ad inceptum
