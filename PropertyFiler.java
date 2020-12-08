@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -43,4 +44,56 @@ public class PropertyFiler {
         }
         return propertyList;
     }
+
+    public ArrayList<Property> search(Owner owner) {
+        ArrayList<Property> result = new ArrayList<Property>();
+        for (Property prop : read()) {
+            for (Owner owners : prop.getOwners())
+                if (owners.equals(owner)) {
+                    result.add(prop);
+                    break;
+                }
+        }
+        return result;
+    }
+
+    public void rewrite(ArrayList<Property> properties) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for (Property prop : properties)
+                writer.write(prop.toString() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void makeTaxPayment(Property prop, PropertyTax taxYear, double payment) {
+        ArrayList<Property> store = read();
+        for (Property property : store)
+            if (prop.equals(property))
+                for (PropertyTax tax : property.getPropertyTaxes())
+                    if (tax.equals(taxYear))
+                        tax.makePayment(payment);
+        rewrite(store);
+    }
+
+    public ArrayList<Property> search(Address address) {
+        ArrayList<Property> result = new ArrayList<>();
+        for (Property prop : read())
+            if (prop.getAddress().equals(address))
+                result.add(prop);
+        return result;
+    }
+
+    public ArrayList<Property> search(String routingKey) {
+        if (routingKey.equals(""))
+            return read();
+        ArrayList<Property> result = new ArrayList<>();
+        for (Property prop : read())
+            if (prop.getRoutingKey().equalsIgnoreCase(routingKey))
+                result.add(prop);
+        return result;
+    }
+
 }

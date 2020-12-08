@@ -1,7 +1,5 @@
 Note: when processing use PropertyFiler methods to just take all properties as objects instead of text from file
 
-*Completing the menu options in Menu_CLI
-	after these are done we can just use the same format for the gui just with buttons and event handling.
-	Properties and the tax data may need more accessor methods
-
 *Cleaning up PropertyTax.calculate();
+*Menu_GUI
+    (look at Menu_CLI for functionality)

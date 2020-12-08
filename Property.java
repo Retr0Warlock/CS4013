@@ -16,7 +16,7 @@ public class Property {
     public Property(ArrayList<Owner> owners, Address address, String eircode, double marketVal, String category, boolean isPrivateRes) throws InvalidObjectException {
         this.owners=owners;
         this.address = address;
-        this.eircode = eircode;
+        this.eircode = eircode.trim().toUpperCase();
         this.marketVal = marketVal;
         this.category = category;
         this.isPrivateRes = isPrivateRes;
@@ -55,6 +55,9 @@ public class Property {
         return propertyTaxes;
     }
 
+    public String getRoutingKey(){
+        return eircode.substring(0,3);
+    }
     /* Returns address */
     public Address getAddress() {
         return address;
@@ -85,11 +88,22 @@ public class Property {
         return PropertyTax.calculate(this);
     }
 
+    public double getTaxDue(){
+        double result=0;
+        for(PropertyTax taxes:propertyTaxes)
+            result+=taxes.getTax()-taxes.getPaymentTotal();
+        return result;
+    }
+
     @Override
     public boolean equals(Object prop) {
         return toString().equals(prop.toString());
     }
 
+    public String generalString(){
+        return address.toString().replaceAll(",","\n")+"\n"+eircode+"\n"+
+                "MarketValue: "+marketVal+"\n"+"Private Residence: "+isPrivateRes+"\n"+"Category: "+category+"\nTax due: "+getTaxDue();
+    }
     @Override
     public String toString() {
         String result=owners.size()+",";

@@ -1,22 +1,14 @@
 structure is set up so no major changes should happen
 
-Owner:
--Done
-
 Menu_CLI:
--Add property is done.
--Quit is done.
--Layout is mainly set out
--Search is currently a WIP.(Searching can be done by calling PropertyFiler.read() and using the objects)
--Admin menu is untouched
+Small polishing required
 
 Property:
 -Done
 -toString takes form "no.ofOwners,owner,firstline,secondline,county,country,eircode,marketvalue,category,privateRes?,propertytaxyear,no.of payments,payments,taxforthatyear,...
 
-
 PropertyFiler:
--Search function and others need to be added
+-Done
 
 Address:
 -Done

@@ -15,6 +15,18 @@ public class PropertyTax {
         payments = new ArrayList<Double>();
     }
 
+    public double getTax() {
+        return tax;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public boolean equals(PropertyTax tax){
+        return toString().equals(tax.toString());
+    }
+
     public PropertyTax(Year year, String[] subArr, double tax) {
         this.year = year;
         this.payments = new ArrayList<Double>();
@@ -60,6 +72,10 @@ public class PropertyTax {
             }
         }
         return PropertyTax;
+    }
+
+    public String getSummary(){
+        return year+": "+(tax-getPaymentTotal())+" due of "+tax+" total.";
     }
 
     public void makePayment(double payment) throws IllegalArgumentException {
