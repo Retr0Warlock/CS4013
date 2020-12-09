@@ -168,6 +168,7 @@ public class Menu_CLI {
                                     annualTotalDue += tax.getTax() - tax.getPaymentTotal();
                         System.out.println("Total due for " + yearChoice + ": " + annualTotalDue);
                     }
+                    case 3 -> quit=true;
                 }
             } catch (Exception a) {
                 System.out.println(a.toString());
