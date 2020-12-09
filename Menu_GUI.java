@@ -49,7 +49,6 @@ public class Menu_GUI extends Application {
         main.setPrefSize(500, 500);
         mainMenu = new Scene(main, 500, 500);
 
-
         //OwnerMenu
         Button ownerButton1 = new Button("Register a Property");
         ownerButton1.setOnAction(e-> window.setScene(AddPropertyMenu));
@@ -62,10 +61,9 @@ public class Menu_GUI extends Application {
         Label ownerMenuLabel = new Label("Choose Owner menu option");
         ownerMenuParent.getChildren().addAll(ownerMenuLabel, ownerMenuButtons);
         ownerMenu = new Scene(ownerMenuParent, 500, 500);
-        
-        
+
         //Register A Property
-        Label names = new Label("Owners (Comma seperated)"); 
+        Label names = new Label("Owners (Comma seperated)");
         this.Names = new TextField();
         Label address = new Label("Address");
         Label firstline = new Label("First line");
@@ -98,14 +96,8 @@ public class Menu_GUI extends Application {
         AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
         AddPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
         
-        
-        
         //My Property
-        
-                
-        
-        
-        
+
         //AdminMenu
         Button AdminButton1 = new Button("Search Tax Data");
         Button AdminButton2 = new Button("Overdue Tax");
@@ -118,8 +110,6 @@ public class Menu_GUI extends Application {
         Label AdminMenuLabel = new Label("Choose Admin menu option");
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
-        
-        
         
         stage.setScene(mainMenu);
         stage.show();
@@ -141,8 +131,14 @@ public class Menu_GUI extends Application {
         double marketVal = Double.parseDouble(this.MarketValue.getText());
         String catagory = Catagory.getValue();
         boolean privateRes = PrivateRes.getValue().equalsIgnoreCase("yes");
-        Property newProp = new Property(owners, address, eircode, marketVal, catagory, privateRes);
-        filer.add(newProp);    
+        Property newProp = null;
+        try {
+            newProp = new Property(owners, address, eircode, marketVal, catagory, privateRes);
+        } catch (InvalidObjectException e) {
+            e.printStackTrace();
+        }
+        filer.add(newProp);
+        window.setScene(ownerMenu);
     }
 }
 
