@@ -22,10 +22,17 @@ public class Menu_CLI {
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
-                    case 1 -> ownerMenu();
-                    case 2 -> adminMenu();
-                    case 3 -> quit = true;
-                    default -> throw new IllegalStateException("Unexpected value: " + Integer.parseInt(choice));
+                    case 1:
+                        ownerMenu();
+                        break;
+                    case 2:
+                        adminMenu();
+                        break;
+                    case 3:
+                        quit = true;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + Integer.parseInt(choice));
                 }
             } catch (Exception e) {
                 System.out.println("Please enter valid input");
@@ -120,9 +127,15 @@ public class Menu_CLI {
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
-                    case 1 -> filer.add(createProperty());
-                    case 2 -> myPropertiesMenu();
-                    case 3 -> quit = true;
+                    case 1:
+                        filer.add(createProperty());
+                        break;
+                    case 2:
+                        myPropertiesMenu();
+                        break;
+                    case 3:
+                        quit = true;
+                        break;
                 }
             } catch (Exception a) {
                 a.printStackTrace();
@@ -143,7 +156,7 @@ public class Menu_CLI {
                 ownedProperties = filer.search(new Owner(choice));
                 System.out.println("1.List properties/Pay tax 2.Get tax due 3.Quit");
                 switch (Integer.parseInt(in.nextLine())) {
-                    case 1 -> {
+                    case 1: {
                         Property propChoice = chooseProperty(ownedProperties);
                         for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
                             System.out.println(tax.getSummary() + "\n");
@@ -154,7 +167,7 @@ public class Menu_CLI {
                             System.out.println("Payment of " + payment + "made");
                         }
                     }
-                    case 2 -> {
+                    case 2: {
                         double totalTaxDue = 0;
                         for (Property prop : ownedProperties)
                             totalTaxDue += prop.getTaxDue();
@@ -168,7 +181,7 @@ public class Menu_CLI {
                                     annualTotalDue += tax.getTax() - tax.getPaymentTotal();
                         System.out.println("Total due for " + yearChoice + ": " + annualTotalDue);
                     }
-                    case 3 -> quit=true;
+                    case 3: quit=true;
                 }
             } catch (Exception a) {
                 System.out.println(a.toString());
