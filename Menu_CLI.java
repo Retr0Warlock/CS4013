@@ -199,6 +199,7 @@ public class Menu_CLI {
 
     }
 
+
     public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
         Scanner in = new Scanner(System.in);
         System.out.println("Choose which year");
@@ -246,8 +247,8 @@ public class Menu_CLI {
         }
     }
 
-    public Address createAddress(){
-        Scanner in=new Scanner(System.in);
+    public Address createAddress() {
+        Scanner in = new Scanner(System.in);
         System.out.print("\t\t\tAddress \nFirstLine: ");
         String firstLine = in.nextLine();
         System.out.print("SecondLine: ");
