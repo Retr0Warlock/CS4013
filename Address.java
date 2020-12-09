@@ -8,11 +8,11 @@ public class Address {
     String country;
 
     public Address(String firstLine, String secondLine, String city, String county, String country) {
-        this.firstLine = firstLine;
-        this.secondLine = secondLine;
-        this.city = city;
-        this.county = county;
-        this.country = country;
+        this.firstLine = firstLine.trim();
+        this.secondLine = secondLine.trim();
+        this.city = city.trim();
+        this.county = county.trim();
+        this.country = country.trim();
     }
 
     public Address(String firstLine, String city, String county, String country) {
@@ -51,6 +51,10 @@ public class Address {
         return country;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        return obj.toString().equalsIgnoreCase(toString());
+    }
     @Override
     public String toString() {
         return firstLine + "," + secondLine + "," + city + "," + county + "," + country;

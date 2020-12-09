@@ -22,10 +22,17 @@ public class Menu_CLI {
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
-                    case 1 -> ownerMenu();
-                    case 2 -> adminMenu();
-                    case 3 -> quit = true;
-                    default -> throw new IllegalStateException("Unexpected value: " + Integer.parseInt(choice));
+                    case 1:
+                        ownerMenu();
+                        break;
+                    case 2:
+                        adminMenu();
+                        break;
+                    case 3:
+                        quit = true;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + Integer.parseInt(choice));
                 }
             } catch (Exception e) {
                 System.out.println("Please enter valid input");
@@ -43,30 +50,37 @@ public class Menu_CLI {
             try {
                 switch (Integer.parseInt(choice)) {
                     case 1:
-                        boolean quit2=false;
-                        while(!quit2){
-                            System.out.println("1.Search by Owner 2.Search by address 3.List all properties 4.Quit");
-                            ArrayList<Property> properties;
-                            switch (Integer.parseInt(in.nextLine())){
+                        boolean quit2 = false;
+                        while (!quit2) {
+                            System.out.println("1.Search by Owner 2.Search by address 3.Search by routing key 4.List all properties 5.Quit");
+                            ArrayList<Property> properties = null;
+                            switch (Integer.parseInt(in.nextLine())) {
                                 case 1:
-                                    System.out.println("Enter Owner name");
-                                    properties=filer.search(new Owner(in.nextLine()));
+                                    System.out.print("Enter Owner name: ");
+                                    properties = filer.search(new Owner(in.nextLine()));
                                     break;
                                 case 2:
-                                    System.out.println("Enter address");
-                                    properties=filer.search(new Address(in.nextLine(),in.nextLine(),in.nextLine(),in.nextLine()));
+                                    properties = filer.search(createAddress());
+                                    if (properties.size() == 0)
+                                        throw new Exception("No property under that address");
+                                    break;
                                 case 3:
-                                    properties= filer.read();
+                                    System.out.print("Enter routing key: ");
+                                    properties = filer.search(in.nextLine());
                                     break;
                                 case 4:
-                                    quit2=true;
+                                    properties = filer.read();
+                                    break;
+                                case 5:
+                                    quit2 = true;
+                                    break;
                                 default:
                                     throw new IllegalStateException("Unexpected value: " + Integer.parseInt(in.nextLine()));
                             }
                             Property propChoice = chooseProperty(properties);
                             for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
                                 System.out.println(tax.getSummary() + "\n");
-                            quit2=true;
+                            quit2 = true;
                         }
                         break;
                     case 2:
@@ -87,19 +101,19 @@ public class Menu_CLI {
                         break;
                     case 3:
                         System.out.println("Enter routing key(Blank to ignore): ");
-                        double totalTaxPaid=0;
-                        ArrayList<Property> properties=filer.search(in.nextLine());
-                        for(Property prop: properties)
-                            for(PropertyTax tax:prop.getPropertyTaxes())
-                                totalTaxPaid+=tax.getPaymentTotal();
-                            double averageTaxPaid=totalTaxPaid/properties.size();
-                            int noPropTaxPaid=0;
-                            for(Property prop:properties)
-                                if(prop.getTaxDue() == 0)
-                                    noPropTaxPaid++;
-                        System.out.println("Total tax paid: "+totalTaxPaid+
-                                "\nAverage tax paid: "+averageTaxPaid+
-                                "\nNumber and percentage of property taxes fully paid: "+noPropTaxPaid+noPropTaxPaid/properties.size()+"%");
+                        double totalTaxPaid = 0;
+                        ArrayList<Property> properties = filer.search(in.nextLine());
+                        for (Property prop : properties)
+                            for (PropertyTax tax : prop.getPropertyTaxes())
+                                totalTaxPaid += tax.getPaymentTotal();
+                        double averageTaxPaid = totalTaxPaid / properties.size();
+                        int noPropTaxPaid = 0;
+                        for (Property prop : properties)
+                            if (prop.getTaxDue() == 0)
+                                noPropTaxPaid++;
+                        System.out.println("Total tax paid: " + totalTaxPaid +
+                                "\nAverage tax paid: " + averageTaxPaid +
+                                "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
                         break;
                     case 4:
                         quit = true;
@@ -120,9 +134,15 @@ public class Menu_CLI {
             String choice = in.nextLine();
             try {
                 switch (Integer.parseInt(choice)) {
-                    case 1 -> filer.add(createProperty());
-                    case 2 -> myPropertiesMenu();
-                    case 3 -> quit = true;
+                    case 1:
+                        filer.add(createProperty());
+                        break;
+                    case 2:
+                        myPropertiesMenu();
+                        break;
+                    case 3:
+                        quit = true;
+                        break;
                 }
             } catch (Exception a) {
                 a.printStackTrace();
@@ -143,7 +163,7 @@ public class Menu_CLI {
                 ownedProperties = filer.search(new Owner(choice));
                 System.out.println("1.List properties/Pay tax 2.Get tax due 3.Quit");
                 switch (Integer.parseInt(in.nextLine())) {
-                    case 1 -> {
+                    case 1:
                         Property propChoice = chooseProperty(ownedProperties);
                         for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
                             System.out.println(tax.getSummary() + "\n");
@@ -151,10 +171,10 @@ public class Menu_CLI {
                             System.out.println("Enter payment amount: ");
                             double payment = Double.parseDouble(in.nextLine());
                             filer.makeTaxPayment(propChoice, chooseTax(propChoice.getPropertyTaxes()), payment);
-                            System.out.println("Payment of " + payment + "made");
+                            System.out.println("Payment of " + payment + " made");
                         }
-                    }
-                    case 2 -> {
+                        break;
+                    case 2:
                         double totalTaxDue = 0;
                         for (Property prop : ownedProperties)
                             totalTaxDue += prop.getTaxDue();
@@ -167,8 +187,10 @@ public class Menu_CLI {
                                 if (tax.getYear().equals(yearChoice))
                                     annualTotalDue += tax.getTax() - tax.getPaymentTotal();
                         System.out.println("Total due for " + yearChoice + ": " + annualTotalDue);
-                    }
-                    case 3 -> quit=true;
+                        break;
+                    case 3:
+                        quit = true;
+                        break;
                 }
             } catch (Exception a) {
                 System.out.println(a.toString());
@@ -194,17 +216,7 @@ public class Menu_CLI {
             for (String str : in.nextLine().split(","))
                 owners.add(new Owner(str));
 
-            System.out.print("\t\t\tAddress \nFirstLine: ");
-            String firstLine = in.nextLine();
-            System.out.print("SecondLine: ");
-            String secondLine = in.nextLine();
-            System.out.print("City: ");
-            String city = in.nextLine();
-            System.out.print("County: ");
-            String county = in.nextLine();
-            System.out.print("Country: ");
-            String country = in.nextLine();
-            Address address = new Address(firstLine, secondLine, city, county, country);
+            Address address = createAddress();
 
             System.out.print("Eircode: ");
             String eircode = in.nextLine();
@@ -232,6 +244,21 @@ public class Menu_CLI {
         } catch (Exception a) {
             throw new InvalidObjectException("Invalid property");
         }
+    }
+
+    public Address createAddress(){
+        Scanner in=new Scanner(System.in);
+        System.out.print("\t\t\tAddress \nFirstLine: ");
+        String firstLine = in.nextLine();
+        System.out.print("SecondLine: ");
+        String secondLine = in.nextLine();
+        System.out.print("City: ");
+        String city = in.nextLine();
+        System.out.print("County: ");
+        String county = in.nextLine();
+        System.out.print("Country: ");
+        String country = in.nextLine();
+        return new Address(firstLine, secondLine, city, county, country);
     }
 
     public Property chooseProperty(ArrayList<Property> propertyList) {
