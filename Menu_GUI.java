@@ -42,7 +42,8 @@ public class Menu_GUI extends Application {
         //Ownermenu
         Button ownerButton1 = new Button("option1");
         Button ownerButton2 = new Button("option2");
-        Button ownerButton3 = new Button("option3");
+        Button ownerButton3 = new Button("quit");
+        ownerButton3.setOnAction(e->window.setScene(mainMenu));
         HBox ownerMenuButtons = new HBox();
         ownerMenuButtons.getChildren().addAll(ownerButton1, ownerButton2, ownerButton3);
         VBox ownerMenuParent = new VBox();
