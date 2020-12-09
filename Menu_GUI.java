@@ -121,7 +121,6 @@ public class Menu_GUI extends Application {
         
         
         
-        
         stage.setScene(mainMenu);
         stage.show();
     }
