@@ -189,6 +189,7 @@ public class Menu_CLI {
         }
 
     }
+    
 
     public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
         Scanner in = new Scanner(System.in);
