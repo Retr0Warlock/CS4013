@@ -14,14 +14,16 @@ import javafx.collections.*;
 import javafx.beans.value.*;
 import java.util.*;
 import java.io.*;
+import java.time.Year;
 public class Menu_GUI extends Application {
     Stage window;
     Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
-    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, getTax, getTaxYear, generalTaxStats;
+    ChoiceBox<Property> ChosenProp;
+    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue;
     private final PropertyFiler filer = new PropertyFiler();
-    
+   
     public static void main(String[] args) {
         launch(args);
     }
@@ -29,7 +31,7 @@ public class Menu_GUI extends Application {
     @Override
     public void start(Stage stage) {
         window = stage;
-        //Main menu
+        //Main menu - Done
         stage.setTitle("Main Menu");
 
         Button options1 = new Button("Owner");
@@ -51,7 +53,7 @@ public class Menu_GUI extends Application {
         mainMenu = new Scene(main, 500, 500);
 
 
-        //OwnerMenu
+        //OwnerMenu - Done
         Button ownerButton1 = new Button("Register a Property");
         ownerButton1.setOnAction(e-> window.setScene(AddPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
@@ -66,7 +68,7 @@ public class Menu_GUI extends Application {
         ownerMenu = new Scene(ownerMenuParent, 500, 500);
         
         
-        //Register A Property
+        //Register A Property - Done
         Label names = new Label("Owners (Comma seperated)"); 
         this.Names = new TextField();
         Label address = new Label("Address");
@@ -104,10 +106,10 @@ public class Menu_GUI extends Application {
         
         
         
-        //My Property
+        //My Property - Done
         this.Names = new TextField();
         Button listProp = new Button("List Properties / Pay Tax");
-        listProp.setOnAction(e-> ListProperties_PayTax());
+        //listProp.setOnAction(e-> ListProperties_PayTax());
         Button taxDue = new Button("Get tax due");
         taxDue.setOnAction(e->window.setScene(getTaxDueMenu));
         Button myPropQuit = new Button("Quit");
@@ -119,20 +121,22 @@ public class Menu_GUI extends Application {
         myPropertiesParent.getChildren().addAll(ownerName, myPropertiesFields);
         myPropertiesMenu = new Scene(myPropertiesParent, 500, 500);
         
-        //ListProperties
-        ChoiceBox ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
+        //ListProperties - WIP
+        this.ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
         this.Amount = new TextField();
+        
         Button Pay = new Button("Pay");
         
         Button listQuit = new Button("Quit");
         listQuit.setOnAction(e->window.setScene(ownerMenu));
         HBox ListPropFields = new HBox();
-        ListPropFields.getChildren().addAll(ChosenProp, Amount, Pay, listQuit);
+        ListPropFields.getChildren().addAll(ChosenProp, Firstline, Amount, Pay, listQuit);
         VBox ListPropParent = new VBox();
-        ListPropParent.getChildren().addAll(ListPropFields);
+        addInfo = new Label("");
+        ListPropParent.getChildren().addAll(ListPropFields, addInfo);
         ListPropMenu = new Scene(ListPropParent, 600, 600);
         
-        //Get Tax Due
+        //Get Tax Due - Done
         this.taxYear = new TextField();
         Button taxGet = new Button("Get Tax Due");
         taxGet.setOnAction(e->getTaxDue());
@@ -148,7 +152,7 @@ public class Menu_GUI extends Application {
         getTaxDueMenu = new Scene(getTaxParent, 400, 400);
         
         
-        //AdminMenu
+        //AdminMenu - Done
         Button AdminButton1 = new Button("Search Tax Data");
         AdminButton1.setOnAction(e->window.setScene(searchTaxMenu));
         Button AdminButton2 = new Button("Overdue Tax");
@@ -164,7 +168,7 @@ public class Menu_GUI extends Application {
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
         
-        //Search Tax Data
+        //Search Tax Data - WIP
         this.searchOwner= new TextField();
         Button searchForOwner = new Button("Search by Owner");
         
@@ -182,23 +186,24 @@ public class Menu_GUI extends Application {
         searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
         searchTaxMenu = new Scene(searchTaxParent, 500, 500);
         
-        //Overdue Tax
+        //Overdue Tax - WIP
         Button searchOverdue = new Button("Search");
-        
+        searchOverdue.setOnAction(e->OverDueTax());
         Label overduerouting= new Label("Routing Key (Leave Blank to Ignore)");
         this.overdueRouting = new TextField();
         Label overdueyear = new Label("Year (Leave Blank to Ignore)");
         this.overdueYear = new TextField();
+        this.totalOverdue = new Label("");
         Button overdueQuit = new Button("Quit");
         overdueQuit.setOnAction(e->window.setScene(AdminMenu));
         HBox overdueTaxFields = new HBox();
-        overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, overdueQuit);
+        overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, totalOverdue, overdueQuit);
         VBox overdueTaxParent = new VBox();
         this.overdueTaxLabel = new Label("");
         overdueTaxParent.getChildren().addAll(overdueTaxLabel, overdueTaxFields);
         overdueTaxMenu = new Scene(overdueTaxParent, 500, 500);
         
-        //General Tax Statistics
+        //General Tax Statistics - Done
         Button showStats = new Button("Show Statistics");
         showStats.setOnAction(e->generalTaxStats());
         this.generalRouting = new TextField();
@@ -217,7 +222,68 @@ public class Menu_GUI extends Application {
         stage.show();
     }
     
-    public void getTaxDue() {
+    public void OverDueTax() {
+        String searchCode = overdueRouting.getText();
+        String yearSearch = overdueYear.getText();
+        double overDueTax = 0;
+        if (yearSearch.equals(""))
+            for (Property prop : filer.search(searchCode))
+                overDueTax += prop.getTaxDue();
+        else
+            for (Property prop : filer.search(searchCode))
+                for (PropertyTax tax : prop.getPropertyTaxes())
+                    if (tax.getYear().equals(Year.parse(yearSearch)))
+                        overDueTax += tax.getTax() - tax.getPaymentTotal();
+        totalOverdue.setText("Total tax overdue: " + overDueTax);
+    }
+    
+    /*public void ListProperties_PayTax() {
+        String choice = Names.getText();
+        ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
+        try {
+                ownedProperties = filer.search(new Owner(choice));
+                Property propChoice = chooseProperty(ownedProperties);
+                String temp = "";
+                for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
+                    temp = temp + (tax.getSummary() + "\n");
+                addInfo.setText(temp);
+                if (propChoice.getTaxDue() > 0) {
+                    double payment = Double.parseDouble(Amount.getText());
+                    filer.makeTaxPayment(propChoice, chooseTax(propChoice.getPropertyTaxes()), payment);
+                }
+            } catch (Exception a) {
+                System.out.println(a.toString());
+            }
+        window.setScene(ListPropMenu);
+    }
+    public Property chooseProperty(ArrayList<Property> propertyList) {
+        ChosenProp = new ChoiceBox(FXCollections.observableArrayList(propertyList));
+        ChosenProp.getSelectionModel().select(0);
+        return ChosenProp.getValue();
+    }
+    public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
+        
+    }
+    */
+    
+    
+    //generalTaxStats
+    public void generalTaxStats() {
+        double totalTaxPaid = 0;
+        ArrayList<Property> properties = filer.search(generalRouting.getText());
+        for (Property prop : properties)
+            for (PropertyTax tax : prop.getPropertyTaxes())
+                totalTaxPaid += tax.getPaymentTotal();
+        double averageTaxPaid = totalTaxPaid / properties.size();
+        int noPropTaxPaid = 0;
+        for (Property prop : properties)
+            if (prop.getTaxDue() == 0)
+                noPropTaxPaid++;
+        generalTaxStats.setText("Total tax paid: " + totalTaxPaid + "\nAverage tax paid: " + averageTaxPaid + "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
+    }
+    
+    //Get Tax Due
+     public void getTaxDue() {
         String choice = this.Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
         double totalTaxDue = 0;
@@ -236,27 +302,6 @@ public class Menu_GUI extends Application {
             }
         }
         getTaxYear.setText("Total due for " + yearChoice + ": " + annualTotalDue);
-    }
-    
-    public void generalTaxStats() {
-        double totalTaxPaid = 0;
-        ArrayList<Property> properties = filer.search(generalRouting.getText());
-        for (Property prop : properties)
-            for (PropertyTax tax : prop.getPropertyTaxes())
-                totalTaxPaid += tax.getPaymentTotal();
-        double averageTaxPaid = totalTaxPaid / properties.size();
-        int noPropTaxPaid = 0;
-        for (Property prop : properties)
-            if (prop.getTaxDue() == 0)
-                noPropTaxPaid++;
-        generalTaxStats.setText("Total tax paid: " + totalTaxPaid + "\nAverage tax paid: " + averageTaxPaid + "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
-    }
-    
-    public void ListProperties_PayTax() {
-        String choice = Names.getText();
-        ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
-        
-        window.setScene(ListPropMenu);
     }
     
     //Register A Property
