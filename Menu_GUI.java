@@ -19,7 +19,7 @@ public class Menu_GUI extends Application {
     Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
-    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel;
+    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, getTax, getTaxYear;
     private final PropertyFiler filer = new PropertyFiler();
     
     public static void main(String[] args) {
@@ -135,11 +135,14 @@ public class Menu_GUI extends Application {
         //Get Tax Due
         this.taxYear = new TextField();
         Button taxGet = new Button("Get Tax Due");
-        
+        taxGet.setOnAction(e->getTaxDue());
+        this.getTaxYear = new Label ("");
+        Label enterYear = new Label ("Enter a year to view total tax due for all owned properties that year: ");
+        this.getTax = new Label ("");
         Button taxQuit = new Button("Quit");
         taxQuit.setOnAction(e->window.setScene(ownerMenu));
         HBox getTaxFields = new HBox();
-        getTaxFields.getChildren().addAll(taxYear, taxGet, taxQuit);
+        getTaxFields.getChildren().addAll(enterYear, getTax, taxYear, taxGet, taxQuit, getTaxYear);
         VBox getTaxParent = new VBox();
         getTaxParent.getChildren().addAll(getTaxFields);
         getTaxDueMenu = new Scene(getTaxParent, 400, 400);
@@ -213,6 +216,26 @@ public class Menu_GUI extends Application {
         stage.show();
     }
     
+    public void getTaxDue() {
+        String choice = this.Names.getText();
+        ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
+        double totalTaxDue = 0;
+        ownedProperties = filer.search(new Owner(choice));
+        for (Property prop : ownedProperties) {
+            totalTaxDue += prop.getTaxDue();
+        }
+        getTax.setText("Total tax due: " + totalTaxDue);
+        String yearChoice = this.taxYear.getText();
+        double annualTotalDue = 0;
+        for (Property prop : ownedProperties) {
+            for (PropertyTax tax : prop.getPropertyTaxes()) {
+                if (tax.getYear().equals(yearChoice)) {
+                    annualTotalDue += tax.getTax() - tax.getPaymentTotal();
+                }
+            }
+        }
+        getTaxYear.setText("Total due for " + yearChoice + ": " + annualTotalDue);
+    }
     
     public void ListProperties_PayTax() {
         String choice = Names.getText();
