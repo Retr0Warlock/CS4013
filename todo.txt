@@ -2,6 +2,10 @@
 
 *Menu_GUI
     (look at Menu_CLI for functionality)
+    Methods not Finished:
+    - List Properties / Pay Tax
+    - chooseProperty
+    - chooseTax
 
 *Menu_CLI clean up
 
