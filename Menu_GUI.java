@@ -16,7 +16,7 @@ import java.util.*;
 import java.io.*;
 public class Menu_GUI extends Application {
     Stage window;
-    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu;
+    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country;
     ChoiceBox<String> Catagory, PrivateRes;
     private final PropertyFiler filer = new PropertyFiler();
@@ -108,6 +108,7 @@ public class Menu_GUI extends Application {
         Button listProp = new Button("List Properties / Pay Tax");
         listProp.setOnAction(e-> ListProperties_PayTax());
         Button taxDue = new Button("Get tax due");
+        taxDue.setOnAction(e->window.setScene(getTaxDueMenu));
         Button myPropQuit = new Button("Quit");
         myPropQuit.setOnAction(e -> window.setScene(ownerMenu));
         HBox myPropertiesFields = new HBox(); 
@@ -130,6 +131,16 @@ public class Menu_GUI extends Application {
         ListPropMenu = new Scene(ListPropParent, 600, 600);
         
         //Get Tax Due
+        TextField taxYear = new TextField();
+        Button taxGet = new Button("Get Tax Due");
+        Button taxQuit = new Button("Quit");
+        taxQuit.setOnAction(e->window.setScene(ownerMenu));
+        HBox getTaxFields = new HBox();
+        getTaxFields.getChildren().addAll(taxYear, taxGet, taxQuit);
+        VBox getTaxParent = new VBox();
+        getTaxParent.getChildren().addAll(getTaxFields);
+        getTaxDueMenu = new Scene(getTaxParent, 400, 400);
+        
         
         //AdminMenu
         Button AdminButton1 = new Button("Search Tax Data");
