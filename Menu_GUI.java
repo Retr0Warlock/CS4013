@@ -16,7 +16,7 @@ import java.util.*;
 import java.io.*;
 public class Menu_GUI extends Application {
     Stage window;
-    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu;
+    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country;
     ChoiceBox<String> Catagory, PrivateRes;
     private final PropertyFiler filer = new PropertyFiler();
@@ -121,17 +121,23 @@ public class Menu_GUI extends Application {
         ChoiceBox ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
         TextField Amount = new TextField();
         Button Pay = new Button("Pay");
+        Button listQuit = new Button("Quit");
+        listQuit.setOnAction(e->window.setScene(ownerMenu));
         HBox ListPropFields = new HBox();
-        ListPropFields.getChildren().addAll(ChosenProp, Amount, Pay);
+        ListPropFields.getChildren().addAll(ChosenProp, Amount, Pay, listQuit);
         VBox ListPropParent = new VBox();
         ListPropParent.getChildren().addAll(ListPropFields);
         ListPropMenu = new Scene(ListPropParent, 600, 600);
         
+        //Get Tax Due
         
         //AdminMenu
         Button AdminButton1 = new Button("Search Tax Data");
+        AdminButton1.setOnAction(e->window.setScene(searchTaxMenu));
         Button AdminButton2 = new Button("Overdue Tax");
+        AdminButton2.setOnAction(e->window.setScene(overdueTaxMenu));
         Button AdminButton3 = new Button("General Tax Statistics");
+        AdminButton3.setOnAction(e->window.setScene(generalStatsMenu));
         Button AdminButton4 = new Button("Quit");
         AdminButton4.setOnAction(e->window.setScene(mainMenu));
         HBox AdminMenuButtons = new HBox();
@@ -142,11 +148,46 @@ public class Menu_GUI extends Application {
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
         
         //Search Tax Data
+        TextField searchOwner= new TextField();
+        Button searchForOwner = new Button("Search by Owner");
+        TextField searchAddress = new TextField();
+        Button searchForAddress = new Button("Search by Address");
+        Button listAll = new Button("List All Properties");
+        Button searchQuit = new Button("Quit");
+        searchQuit.setOnAction(e->window.setScene(AdminMenu));
+        HBox searchTaxFields = new HBox();
+        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, searchAddress, searchForAddress, listAll, searchQuit);
+        VBox searchTaxParent = new VBox();
+        Label searchTaxLabel = new Label("");
+        searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
+        searchTaxMenu = new Scene(searchTaxParent, 500, 500);
         
         //Overdue Tax
+        Button searchOverdue = new Button("Search");
+        Label overduerouting= new Label("Routing Key (Leave Blank to Ignore)");
+        TextField overdueRouting = new TextField();
+        Label overdueyear = new Label("Year (Leave Blank to Ignore)");
+        TextField overdueYear = new TextField();
+        Button overdueQuit = new Button("Quit");
+        overdueQuit.setOnAction(e->window.setScene(AdminMenu));
+        HBox overdueTaxFields = new HBox();
+        overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, overdueQuit);
+        VBox overdueTaxParent = new VBox();
+        Label overdueTaxLabel = new Label("");
+        overdueTaxParent.getChildren().addAll(overdueTaxLabel, overdueTaxFields);
+        overdueTaxMenu = new Scene(overdueTaxParent, 500, 500);
         
         //General Tax Statistics
-        
+        Button showStats = new Button("Show Statistics");
+        TextField generalRouting = new TextField();
+        Button generalQuit = new Button("Quit");
+        generalQuit.setOnAction(e->window.setScene(AdminMenu));
+        HBox generalStatsFields = new HBox();
+        generalStatsFields.getChildren().addAll(generalRouting, showStats, generalQuit);
+        VBox generalStatsParent = new VBox();
+        Label generalStatsLabel = new Label("Routing Key (Leave Blank to ignore)");
+        generalStatsParent.getChildren().addAll(generalStatsLabel, generalStatsFields);
+        generalStatsMenu = new Scene(generalStatsParent, 500, 500);
         
         
         stage.setScene(mainMenu);
