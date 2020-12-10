@@ -16,7 +16,7 @@ import java.util.*;
 import java.io.*;
 public class Menu_GUI extends Application {
     Stage window;
-    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu;
+    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country;
     ChoiceBox<String> Catagory, PrivateRes;
     private final PropertyFiler filer = new PropertyFiler();
@@ -49,10 +49,12 @@ public class Menu_GUI extends Application {
         main.setPrefSize(500, 500);
         mainMenu = new Scene(main, 500, 500);
 
+
         //OwnerMenu
         Button ownerButton1 = new Button("Register a Property");
         ownerButton1.setOnAction(e-> window.setScene(AddPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
+        ownerButton2.setOnAction(e-> window.setScene(myPropertiesMenu));
         Button ownerButton3 = new Button("Quit");
         ownerButton3.setOnAction(e->window.setScene(mainMenu));
         HBox ownerMenuButtons = new HBox();
@@ -61,9 +63,10 @@ public class Menu_GUI extends Application {
         Label ownerMenuLabel = new Label("Choose Owner menu option");
         ownerMenuParent.getChildren().addAll(ownerMenuLabel, ownerMenuButtons);
         ownerMenu = new Scene(ownerMenuParent, 500, 500);
-
+        
+        
         //Register A Property
-        Label names = new Label("Owners (Comma seperated)");
+        Label names = new Label("Owners (Comma seperated)"); 
         this.Names = new TextField();
         Label address = new Label("Address");
         Label firstline = new Label("First line");
@@ -88,16 +91,43 @@ public class Menu_GUI extends Application {
         PrivateRes.getSelectionModel().select(0);
         Button submitNew = new Button("Submit");
         submitNew.setOnAction(e-> AddProp());
+        Button QuitNew = new Button("Quit");
+        QuitNew.setOnAction(e-> window.setScene(ownerMenu));
         
         HBox AddPropertyFields = new HBox();
-        AddPropertyFields.getChildren().addAll(names, Names, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, eircode, Eircode, MarketVal, MarketValue, catagory, Catagory, privateRes, PrivateRes, submitNew);
+        AddPropertyFields.getChildren().addAll(names, Names, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, eircode, Eircode, MarketVal, MarketValue, catagory, Catagory, privateRes, PrivateRes, submitNew, QuitNew);
         VBox AddPropertyParent = new VBox();
         Label AddPropertyLabel = new Label("Fill All Fields");
         AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
         AddPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
         
+        
+        
         //My Property
-
+        this.Names = new TextField();
+        Button listProp = new Button("List Properties / Pay Tax");
+        listProp.setOnAction(e-> ListProperties_PayTax());
+        Button taxDue = new Button("Get tax due");
+        Button myPropQuit = new Button("Quit");
+        myPropQuit.setOnAction(e -> window.setScene(ownerMenu));
+        HBox myPropertiesFields = new HBox(); 
+        myPropertiesFields.getChildren().addAll(Names, listProp, taxDue, myPropQuit);
+        VBox myPropertiesParent = new VBox();
+        Label ownerName = new Label("Fill the name of the Owner and select one of the following options.");
+        myPropertiesParent.getChildren().addAll(ownerName, myPropertiesFields);
+        myPropertiesMenu = new Scene(myPropertiesParent, 500, 500);
+        
+        //ListProperties
+        ChoiceBox ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
+        TextField Amount = new TextField();
+        Button Pay = new Button("Pay");
+        HBox ListPropFields = new HBox();
+        ListPropFields.getChildren().addAll(ChosenProp, Amount, Pay);
+        VBox ListPropParent = new VBox();
+        ListPropParent.getChildren().addAll(ListPropFields);
+        ListPropMenu = new Scene(ListPropParent, 600, 600);
+        
+        
         //AdminMenu
         Button AdminButton1 = new Button("Search Tax Data");
         Button AdminButton2 = new Button("Overdue Tax");
@@ -111,11 +141,26 @@ public class Menu_GUI extends Application {
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
         
+        //Search Tax Data
+        
+        //Overdue Tax
+        
+        //General Tax Statistics
+        
+        
+        
         stage.setScene(mainMenu);
         stage.show();
     }
     
-    public void AddProp() {
+    public void ListProperties_PayTax() {
+        String choice = Names.getText();
+        ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
+        
+        window.setScene(ListPropMenu);
+    }
+    
+    public void AddProp(){
         ArrayList<Owner> owners = new ArrayList<Owner>();
         String names = this.Names.getText();
         for (String str : names.split(",")) {
