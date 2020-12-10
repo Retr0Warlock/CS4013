@@ -21,7 +21,7 @@ public class Menu_GUI extends Application {
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
     ChoiceBox<Property> ChosenProp;
-    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue;
+    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue, taxData;
     private final PropertyFiler filer = new PropertyFiler();
    
     public static void main(String[] args) {
@@ -168,19 +168,28 @@ public class Menu_GUI extends Application {
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
         
-        //Search Tax Data - WIP
+        //Search Tax Data - WIP - Requires ChooseProperty method to work.
         this.searchOwner= new TextField();
         Button searchForOwner = new Button("Search by Owner");
         
-        this.searchAddress = new TextField();
+        firstline = new Label("First Line");
+        this.Firstline = new TextField();
+        secondline = new Label("Second line");
+        this.Secondline = new TextField();
+        city = new Label("City");
+        this.City = new TextField();
+        county = new Label("County");
+        this.County = new TextField();
+        country = new Label("Country");
+        this.Country = new TextField();
         Button searchForAddress = new Button("Search by Address");
         
         Button listAll = new Button("List All Properties");
-        
+        this.taxData = new Label("");
         Button searchQuit = new Button("Quit");
         searchQuit.setOnAction(e->window.setScene(AdminMenu));
         HBox searchTaxFields = new HBox();
-        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, searchAddress, searchForAddress, listAll, searchQuit);
+        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, searchForAddress, listAll, taxData, searchQuit);
         VBox searchTaxParent = new VBox();
         this.searchTaxLabel = new Label("");
         searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
@@ -222,6 +231,43 @@ public class Menu_GUI extends Application {
         stage.show();
     }
     
+    //Search Tax Data
+    public void searchTaxDataAllProp() {
+        ArrayList<Property> properties;
+        properties= filer.read();
+        Property propChoice = chooseProperty(properties);
+        String temp = "";
+        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
+            temp = temp + (tax.getSummary() + "\n");
+        taxData.setText(temp);
+    }
+    public void searchTaxDataByName() {
+        ArrayList<Property> properties;
+        String name = searchOwner.getText();
+        properties=filer.search(new Owner(name));
+        Property propChoice = chooseProperty(properties);
+        String temp = "";
+        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
+            temp = temp + (tax.getSummary() + "\n");
+        taxData.setText(temp);
+    }
+    public void searchTaxDataByAddress() {
+        ArrayList<Property> properties;
+        String firstline = this.Firstline.getText();
+        String secondline = this.Secondline.getText();
+        String city = this.City.getText();
+        String county = this.County.getText();
+        String country = this.Country.getText();
+        properties=filer.search(new Address(firstline, secondline, city, county, country));
+        Property propChoice = chooseProperty(properties);
+        String temp = "";
+        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
+            temp = temp + (tax.getSummary() + "\n");
+        taxData.setText(temp);
+    }
+    
+    
+    //Overdue Tax
     public void OverDueTax() {
         String searchCode = overdueRouting.getText();
         String yearSearch = overdueYear.getText();
@@ -237,8 +283,8 @@ public class Menu_GUI extends Application {
         totalOverdue.setText("Total tax overdue: " + overDueTax);
     }
     
-    /*public void ListProperties_PayTax() {
-        String choice = Names.getText();
+    public void ListProperties_PayTax() {
+        /*String choice = Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
         try {
                 ownedProperties = filer.search(new Owner(choice));
@@ -254,13 +300,16 @@ public class Menu_GUI extends Application {
             } catch (Exception a) {
                 System.out.println(a.toString());
             }
-        window.setScene(ListPropMenu);
+        window.setScene(ListPropMenu); */
     }
+    
     public Property chooseProperty(ArrayList<Property> propertyList) {
         ChosenProp = new ChoiceBox(FXCollections.observableArrayList(propertyList));
         ChosenProp.getSelectionModel().select(0);
         return ChosenProp.getValue();
     }
+    
+    /*
     public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
         
     }
