@@ -19,7 +19,7 @@ public class Menu_GUI extends Application {
     Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
-    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, getTax, getTaxYear;
+    Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, getTax, getTaxYear, generalTaxStats;
     private final PropertyFiler filer = new PropertyFiler();
     
     public static void main(String[] args) {
@@ -200,12 +200,13 @@ public class Menu_GUI extends Application {
         
         //General Tax Statistics
         Button showStats = new Button("Show Statistics");
-        
+        showStats.setOnAction(e->generalTaxStats());
         this.generalRouting = new TextField();
+        generalTaxStats = new Label("");
         Button generalQuit = new Button("Quit");
         generalQuit.setOnAction(e->window.setScene(AdminMenu));
         HBox generalStatsFields = new HBox();
-        generalStatsFields.getChildren().addAll(generalRouting, showStats, generalQuit);
+        generalStatsFields.getChildren().addAll(generalRouting, showStats, generalTaxStats, generalQuit);
         VBox generalStatsParent = new VBox();
         this.generalStatsLabel = new Label("Routing Key (Leave Blank to ignore)");
         generalStatsParent.getChildren().addAll(generalStatsLabel, generalStatsFields);
@@ -237,13 +238,26 @@ public class Menu_GUI extends Application {
         getTaxYear.setText("Total due for " + yearChoice + ": " + annualTotalDue);
     }
     
+    public void generalTaxStats() {
+        double totalTaxPaid = 0;
+        ArrayList<Property> properties = filer.search(generalRouting.getText());
+        for (Property prop : properties)
+            for (PropertyTax tax : prop.getPropertyTaxes())
+                totalTaxPaid += tax.getPaymentTotal();
+        double averageTaxPaid = totalTaxPaid / properties.size();
+        int noPropTaxPaid = 0;
+        for (Property prop : properties)
+            if (prop.getTaxDue() == 0)
+                noPropTaxPaid++;
+        generalTaxStats.setText("Total tax paid: " + totalTaxPaid + "\nAverage tax paid: " + averageTaxPaid + "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
+    }
+    
     public void ListProperties_PayTax() {
         String choice = Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
         
         window.setScene(ListPropMenu);
     }
-    
     
     //Register A Property
     public void AddProp(){
