@@ -1,5 +1,10 @@
-Note: when processing use PropertyFiler methods to just take all properties as objects instead of text from file
-
 *Cleaning up PropertyTax.calculate();
+
 *Menu_GUI
     (look at Menu_CLI for functionality)
+
+*Menu_CLI clean up
+
+*Documentation
+
+*Final clean up

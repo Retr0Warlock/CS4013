@@ -68,7 +68,7 @@ public class PropertyFiler {
         }
     }
 
-    public void makeTaxPayment(Property prop, PropertyTax taxYear, double payment) {
+    public void makeTaxPayment(Property prop, PropertyTax taxYear, double payment) throws IllegalArgumentException{
         ArrayList<Property> store = read();
         for (Property property : store)
             if (prop.equals(property))
