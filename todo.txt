@@ -2,7 +2,7 @@
 
 *Menu_GUI
     (look at Menu_CLI for functionality)
-    Methods not Finished:
+    Methods not Finished :
     - List Properties / Pay Tax
     - chooseProperty
     - chooseTax
