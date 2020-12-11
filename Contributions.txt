@@ -1,0 +1,22 @@
+All code was contributed to so equally as a group that it is entirely unclear as to who coded which line of code. This is our best guess and approximation.
+
+Josh Shires - 19274386
+	File
+		CRC - 50%
+		UML - 50%
+	Class
+		Menu GUI
+			getTaxDue - 100%
+			generalTaxStats - 100%
+		
+Ben Fagan - 19271085
+	Class
+		Owner - 100%
+	File
+		CRC - 50%
+		UML - 50%
+
+Adam Ryan - 16176154
+	Class
+		Menu GUI
+			CSS - 100%
