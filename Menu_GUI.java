@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.*;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -35,15 +37,13 @@ public class Menu_GUI extends Application {
         Button option1 = new Button("Owner");
         option1.setOnAction(e-> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
-        option2.setOnAction(e-> mainStage.setScene(AdminMenu));
+        option2.setOnAction(e-> ErrorWindow.display("test"));
         Button option3 = new Button("Quit");
         QuitHandler quitHandle = new QuitHandler();
         option3.setOnAction(quitHandle);
-        GridPane buttons = new GridPane();
-        buttons.add(option1,0,0);
-        buttons.add(option2,1,0);
-        buttons.add(option3,2,0);
-//        buttons.getChildren().addAll(options1, option2, option3);
+        HBox buttons =new HBox();
+        buttons.getChildren().addAll(option1,option2,option3);
+        buttons.setAlignment(Pos.CENTER);
 
         BorderPane main = new BorderPane();
 
@@ -387,5 +387,23 @@ public class Menu_GUI extends Application {
 class QuitHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent e) {
         System.exit(0);
+    }
+}
+
+class ErrorWindow {
+    public static void display(String errorMessage){
+        Stage errorWindow=new Stage();
+        errorWindow.initModality(Modality.APPLICATION_MODAL);
+        errorWindow.setTitle("Error");
+
+        Label errorLabel=new Label(errorMessage);
+
+        StackPane main=new StackPane();
+        main.getChildren().add(errorLabel);
+        Scene scene=new Scene(main,500,100);
+        errorWindow.setScene(scene);
+        errorWindow.show();
+
+
     }
 }
