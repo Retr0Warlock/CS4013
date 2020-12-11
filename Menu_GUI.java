@@ -16,7 +16,6 @@ import java.util.*;
 import java.io.*;
 import java.time.Year;
 public class Menu_GUI extends Application {
-    Stage window;
     Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
@@ -29,37 +28,39 @@ public class Menu_GUI extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
-        window = stage;
+    public void start(Stage mainStage) {
         //Main menu - Done
-        stage.setTitle("Main Menu");
+        mainStage.setTitle("Main Menu");
 
-        Button options1 = new Button("Owner");
-        options1.setOnAction(e-> window.setScene(ownerMenu));
+        Button option1 = new Button("Owner");
+        option1.setOnAction(e-> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
-        option2.setOnAction(e-> window.setScene(AdminMenu));
+        option2.setOnAction(e-> mainStage.setScene(AdminMenu));
         Button option3 = new Button("Quit");
         QuitHandler quitHandle = new QuitHandler();
         option3.setOnAction(quitHandle);
-        HBox buttons = new HBox();
-        buttons.getChildren().addAll(options1, option2, option3);
+        GridPane buttons = new GridPane();
+        buttons.add(option1,0,0);
+        buttons.add(option2,1,0);
+        buttons.add(option3,2,0);
+//        buttons.getChildren().addAll(options1, option2, option3);
 
-        VBox main = new VBox();
+        BorderPane main = new BorderPane();
 
         Label header = new Label("Choose user type");
         header.setFont(new Font("Arial", 20));
-        main.getChildren().addAll(header, buttons);
-        main.setPrefSize(500, 500);
+        main.setCenter(header);
+        main.setBottom(buttons);
         mainMenu = new Scene(main, 500, 500);
 
 
         //OwnerMenu - Done
         Button ownerButton1 = new Button("Register a Property");
-        ownerButton1.setOnAction(e-> window.setScene(AddPropertyMenu));
+        ownerButton1.setOnAction(e-> mainStage.setScene(AddPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
-        ownerButton2.setOnAction(e-> window.setScene(myPropertiesMenu));
+        ownerButton2.setOnAction(e-> mainStage.setScene(myPropertiesMenu));
         Button ownerButton3 = new Button("Quit");
-        ownerButton3.setOnAction(e->window.setScene(mainMenu));
+        ownerButton3.setOnAction(e->mainStage.setScene(mainMenu));
         HBox ownerMenuButtons = new HBox();
         ownerMenuButtons.getChildren().addAll(ownerButton1, ownerButton2, ownerButton3);
         VBox ownerMenuParent = new VBox();
@@ -93,9 +94,12 @@ public class Menu_GUI extends Application {
         this.PrivateRes = new ChoiceBox(FXCollections.observableArrayList("Yes", "No"));
         PrivateRes.getSelectionModel().select(0);
         Button submitNew = new Button("Submit");
-        submitNew.setOnAction(e-> AddProp());
+        submitNew.setOnAction(e-> {
+            AddProp();
+            mainStage.setScene(ownerMenu);
+        });
         Button QuitNew = new Button("Quit");
-        QuitNew.setOnAction(e-> window.setScene(ownerMenu));
+        QuitNew.setOnAction(e-> mainStage.setScene(ownerMenu));
         
         HBox AddPropertyFields = new HBox();
         AddPropertyFields.getChildren().addAll(names, Names, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, eircode, Eircode, MarketVal, MarketValue, catagory, Catagory, privateRes, PrivateRes, submitNew, QuitNew);
@@ -111,9 +115,9 @@ public class Menu_GUI extends Application {
         Button listProp = new Button("List Properties / Pay Tax");
         //listProp.setOnAction(e-> ListProperties_PayTax());
         Button taxDue = new Button("Get tax due");
-        taxDue.setOnAction(e->window.setScene(getTaxDueMenu));
+        taxDue.setOnAction(e->mainStage.setScene(getTaxDueMenu));
         Button myPropQuit = new Button("Quit");
-        myPropQuit.setOnAction(e -> window.setScene(ownerMenu));
+        myPropQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
         HBox myPropertiesFields = new HBox(); 
         myPropertiesFields.getChildren().addAll(Names, listProp, taxDue, myPropQuit);
         VBox myPropertiesParent = new VBox();
@@ -128,7 +132,7 @@ public class Menu_GUI extends Application {
         Button Pay = new Button("Pay");
         
         Button listQuit = new Button("Quit");
-        listQuit.setOnAction(e->window.setScene(ownerMenu));
+        listQuit.setOnAction(e->mainStage.setScene(ownerMenu));
         HBox ListPropFields = new HBox();
         ListPropFields.getChildren().addAll(ChosenProp, Firstline, Amount, Pay, listQuit);
         VBox ListPropParent = new VBox();
@@ -144,7 +148,7 @@ public class Menu_GUI extends Application {
         Label enterYear = new Label ("Enter a year to view total tax due for all owned properties that year: ");
         this.getTax = new Label ("");
         Button taxQuit = new Button("Quit");
-        taxQuit.setOnAction(e->window.setScene(ownerMenu));
+        taxQuit.setOnAction(e->mainStage.setScene(ownerMenu));
         HBox getTaxFields = new HBox();
         getTaxFields.getChildren().addAll(enterYear, getTax, taxYear, taxGet, taxQuit, getTaxYear);
         VBox getTaxParent = new VBox();
@@ -154,13 +158,13 @@ public class Menu_GUI extends Application {
         
         //AdminMenu - Done
         Button AdminButton1 = new Button("Search Tax Data");
-        AdminButton1.setOnAction(e->window.setScene(searchTaxMenu));
+        AdminButton1.setOnAction(e->mainStage.setScene(searchTaxMenu));
         Button AdminButton2 = new Button("Overdue Tax");
-        AdminButton2.setOnAction(e->window.setScene(overdueTaxMenu));
+        AdminButton2.setOnAction(e->mainStage.setScene(overdueTaxMenu));
         Button AdminButton3 = new Button("General Tax Statistics");
-        AdminButton3.setOnAction(e->window.setScene(generalStatsMenu));
+        AdminButton3.setOnAction(e->mainStage.setScene(generalStatsMenu));
         Button AdminButton4 = new Button("Quit");
-        AdminButton4.setOnAction(e->window.setScene(mainMenu));
+        AdminButton4.setOnAction(e->mainStage.setScene(mainMenu));
         HBox AdminMenuButtons = new HBox();
         AdminMenuButtons.getChildren().addAll(AdminButton1, AdminButton2, AdminButton3, AdminButton4);
         VBox AdminMenuParent = new VBox();
@@ -187,7 +191,7 @@ public class Menu_GUI extends Application {
         Button listAll = new Button("List All Properties");
         this.taxData = new Label("");
         Button searchQuit = new Button("Quit");
-        searchQuit.setOnAction(e->window.setScene(AdminMenu));
+        searchQuit.setOnAction(e->mainStage.setScene(AdminMenu));
         HBox searchTaxFields = new HBox();
         searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, searchForAddress, listAll, taxData, searchQuit);
         VBox searchTaxParent = new VBox();
@@ -204,7 +208,7 @@ public class Menu_GUI extends Application {
         this.overdueYear = new TextField();
         this.totalOverdue = new Label("");
         Button overdueQuit = new Button("Quit");
-        overdueQuit.setOnAction(e->window.setScene(AdminMenu));
+        overdueQuit.setOnAction(e->mainStage.setScene(AdminMenu));
         HBox overdueTaxFields = new HBox();
         overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, totalOverdue, overdueQuit);
         VBox overdueTaxParent = new VBox();
@@ -218,7 +222,7 @@ public class Menu_GUI extends Application {
         this.generalRouting = new TextField();
         generalTaxStats = new Label("");
         Button generalQuit = new Button("Quit");
-        generalQuit.setOnAction(e->window.setScene(AdminMenu));
+        generalQuit.setOnAction(e->mainStage.setScene(AdminMenu));
         HBox generalStatsFields = new HBox();
         generalStatsFields.getChildren().addAll(generalRouting, showStats, generalTaxStats, generalQuit);
         VBox generalStatsParent = new VBox();
@@ -227,8 +231,8 @@ public class Menu_GUI extends Application {
         generalStatsMenu = new Scene(generalStatsParent, 500, 500);
         
         
-        stage.setScene(mainMenu);
-        stage.show();
+        mainStage.setScene(mainMenu);
+        mainStage.show();
     }
     
     //Search Tax Data
@@ -377,7 +381,6 @@ public class Menu_GUI extends Application {
             e.printStackTrace();
         }
         filer.add(newProp);
-        window.setScene(ownerMenu);
     }
 }
 
