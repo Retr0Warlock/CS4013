@@ -1,22 +1,41 @@
 All code was contributed to so equally as a group that it is entirely unclear as to who coded which line of code. This is our best guess and approximation.
 
+Everyone - JavaDoc - 100%
+
 Josh Shires - 19274386
+	Class
+	Menu GUI
+		getTaxDue - 100%
+		generalTaxStats - 100%
+	
 	File
 		CRC - 50%
 		UML - 50%
-	Class
-		Menu GUI
-			getTaxDue - 100%
-			generalTaxStats - 100%
+	
+	Misc
+		new verison to be merged - 100%
 		
 Ben Fagan - 19271085
 	Class
 		Owner - 100%
+		Menu_GUI
+			overdueTax - 100%
+			searchTaxData - 100%
+			Quit - 100%
+	
 	File
 		CRC - 50%
 		UML - 50%
+		
 
 Adam Ryan - 16176154
 	Class
+		Menu_CLI - 100%
 		Menu GUI
+			MainMenu - 100%
+			AdminMenu - 100%
+			ownerMenu - 100%
 			CSS - 100%
+	
+	Misc
+		Merging new verison - 100%
