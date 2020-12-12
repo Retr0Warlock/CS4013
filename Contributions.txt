@@ -1,6 +1,10 @@
-All code was contributed to so equally as a group that it is entirely unclear as to who coded which line of code. This is our best guess and approximation.
+All code was contributed to so equally as a group that it is entirely unclear as to who coded which line of code. This is our best guess.
 
-Everyone - JavaDoc - 100%
+General -
+	Josh - 33%
+	Ben - 33%
+	Adam - 35%
+
 
 Josh Shires - 19274386
 	Class
@@ -21,12 +25,15 @@ Ben Fagan - 19271085
 		Menu_GUI
 			overdueTax - 100%
 			searchTaxData - 100%
+				+ searchTaxDataAllProp
+				+ searchTaxDataByName
+				+ searchTaxDataByAddress
 			Quit - 100%
 	
 	File
 		CRC - 50%
 		UML - 50%
-		
+		JavaDoc - 100%
 
 Adam Ryan - 16176154
 	Class
@@ -35,6 +42,9 @@ Adam Ryan - 16176154
 			MainMenu - 100%
 			AdminMenu - 100%
 			ownerMenu - 100%
+			getAddressVBox -100%
+			getTaxInfoVBox -100%
+			getPropertyScene -100%
 			CSS - 100%
 	
 	Misc

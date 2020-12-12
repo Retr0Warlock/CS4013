@@ -186,23 +186,24 @@ public class Menu_GUI extends Application {
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         adminMenu = new Scene(AdminMenuParent, 500, 500);
 
-        //Search Tax Data - WIP - Requires ChooseProperty method to work.
+        //Search Tax Data - Done
         this.searchOwner = new TextField();
         Button searchForOwner = new Button("Search by Owner");
-
-//        firstline = new Label("First Line");
-//        this.firstLine = new TextField();
-//        secondline = new Label("Second line");
-//        this.secondLine = new TextField();
-//        city = new Label("City");
-//        this.city = new TextField();
-//        county = new Label("County");
-//        this.county = new TextField();
-//        country = new Label("Country");
+        searchForOwner.setOnAction(e -> searchTaxDataByName());
+        Label firstline = new Label("First Line");
+        this.firstLine = new TextField();
+        Label secondline = new Label("Second line");
+        this.secondLine = new TextField();
+        Label city = new Label("City");
+        this.city = new TextField();
+        Label county = new Label("County");
+        this.county = new TextField();
+        Label country = new Label("Country");
         this.country = new TextField();
         Button searchForAddress = new Button("Search by Address");
-
+        searchForAddress.setOnAction(e -> searchTaxDataByAddress());
         Button listAll = new Button("List All Properties");
+        listAll.setOnAction(e -> searchTaxDataAllProp());
         this.taxData = new Label("");
         Button searchQuit = new Button("Quit");
         searchQuit.setOnAction(e -> mainStage.setScene(adminMenu));
@@ -253,22 +254,15 @@ public class Menu_GUI extends Application {
     public void searchTaxDataAllProp() {
         ArrayList<Property> properties;
         properties = filer.read();
-        Property propChoice = chooseProperty(properties);
-        String temp = "";
-        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
-            temp = temp + (tax.getSummary() + "\n");
-        taxData.setText(temp);
+        chooseProperty(properties);
+        
     }
 
     public void searchTaxDataByName() {
         ArrayList<Property> properties;
         String name = searchOwner.getText();
         properties = filer.search(new Owner(name));
-        Property propChoice = chooseProperty(properties);
-        String temp = "";
-        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
-            temp = temp + (tax.getSummary() + "\n");
-        taxData.setText(temp);
+        chooseProperty(properties);
     }
 
     public void searchTaxDataByAddress() {
@@ -279,11 +273,7 @@ public class Menu_GUI extends Application {
         String county = this.county.getText();
         String country = this.country.getText();
         properties = filer.search(new Address(firstline, secondline, city, county, country));
-        Property propChoice = chooseProperty(properties);
-        String temp = "";
-        for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
-            temp = temp + (tax.getSummary() + "\n");
-        taxData.setText(temp);
+        chooseProperty(properties);
     }
 
 
@@ -303,30 +293,38 @@ public class Menu_GUI extends Application {
         totalOverdue.setText("Total tax overdue: " + overDueTax);
     }
 
-    public void ListProperties_PayTax() {
-        /*String choice = Names.getText();
-        ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
-        try {
-                ownedProperties = filer.search(new Owner(choice));
-                Property propChoice = chooseProperty(ownedProperties);
-                String temp = "";
-                for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
-                    temp = temp + (tax.getSummary() + "\n");
-                addInfo.setText(temp);
-                if (propChoice.getTaxDue() > 0) {
-                    double payment = Double.parseDouble(Amount.getText());
-                    filer.makeTaxPayment(propChoice, chooseTax(propChoice.getPropertyTaxes()), payment);
-                }
-            } catch (Exception a) {
-                System.out.println(a.toString());
-            }
-        window.setScene(ListPropMenu); */
-    }
-
-    public Property chooseProperty(ArrayList<Property> propertyList) {
-        ChosenProp = new ChoiceBox(FXCollections.observableArrayList(propertyList));
-        ChosenProp.getSelectionModel().select(0);
-        return ChosenProp.getValue();
+    
+    public void chooseProperty(ArrayList<Property> propertyList) {
+        ObservableList<Property> props = FXCollections.observableArrayList(propertyList);
+        ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
+        Button quit = new Button("Quit");
+        quit.setOnAction(e->window.setScene(ownerMenu));
+        
+        BorderPane propertyInfoWindow = new BorderPane();
+        VBox choiceVBox = new VBox();
+        choiceVBox.getChildren().addAll(propertyChoiceBox, quit);
+        choiceVBox.setPrefWidth(300);
+        choiceVBox.setPadding(new Insets(10, 100, 10, 50));
+        choiceVBox.setSpacing(6);
+        
+        BorderPane propertyBox = new BorderPane();
+        VBox propertyInfo = new VBox();
+        VBox propertyTaxInfo = new VBox();
+        propertyBox.setTop(propertyInfo);
+        
+        propertyChoiceBox.setOnAction(e -> {
+            propertyBox.setTop(getAddressVBox(propertyChoiceBox.getValue()));
+            propertyBox.setCenter(new VBox());
+            String temp = "";
+            for (PropertyTax tax : propertyChoiceBox.getValue().getPropertyTaxes()) //display tax data for the property
+                temp = temp + (tax.getSummary() + "\n");
+            ErrorWindow.display(temp);
+            window.setScene(adminMenu);
+        });
+        propertyInfoWindow.setLeft(choiceVBox);
+        propertyInfoWindow.setCenter(propertyBox);
+        Scene test = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
+        window.setScene(test);
     }
 
     public void getPropertyScene(ArrayList<Property> properties) {
