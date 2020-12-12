@@ -18,6 +18,7 @@ import java.io.*;
 import java.time.Year;
 
 public class Menu_GUI extends Application {
+    Stage window;
     Scene mainMenu, ownerMenu, adminMenu, addPropertyMenu, myProperties, listPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
     TextField Names, firstLine, secondLine, city, county, eircode, marketValue, country, amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> category, privateRes;
@@ -32,6 +33,7 @@ public class Menu_GUI extends Application {
 
     @Override
     public void start(Stage mainStage) {
+        window = mainStage;
         //Main menu - Done
         mainStage.setTitle("Main Menu");
         BorderPane main = new BorderPane();
@@ -69,7 +71,8 @@ public class Menu_GUI extends Application {
                 ErrorWindow.display("No properties with that owner name");
                 mainStage.setScene(ownerMenu);
             } else {
-                    mainStage.setScene(getPropetyScene(propertyArrayList));
+//                    mainStage.setScene(getPropertyScene(propertyArrayList));
+                getPropertyScene(propertyArrayList);
             }
         });
         Button ownerButton3 = new Button("Quit");
@@ -310,11 +313,10 @@ public class Menu_GUI extends Application {
         return ChosenProp.getValue();
     }
 
-    public Scene getPropetyScene(ArrayList<Property> properties) {
-        ChoiceBox<Property> propertyChoiceBox =new ChoiceBox<Property>();
-        for(Property prop:properties)
-            propertyChoiceBox.getItems().add(prop);
-        ChoiceBox<Year> propertyTaxChoiceBox = new ChoiceBox();
+    public void getPropertyScene(ArrayList<Property> properties) {
+        ObservableList<Property> props = FXCollections.observableArrayList(properties);
+        ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
+        ComboBox<Year> propertyTaxChoiceBox = new ComboBox<Year>();
         TextField paymentInfo = new TextField();
         Button quit = new Button("Quit");
 
@@ -322,49 +324,82 @@ public class Menu_GUI extends Application {
         VBox choiceVBox = new VBox();
         choiceVBox.getChildren().addAll(propertyChoiceBox, propertyTaxChoiceBox, paymentInfo, quit);
         choiceVBox.setPrefWidth(300);
-        choiceVBox.setPadding(new Insets(10,100,10,50));
+        choiceVBox.setPadding(new Insets(10, 100, 10, 50));
         choiceVBox.setSpacing(6);
 
         BorderPane propertyBox = new BorderPane();
         VBox propertyInfo = new VBox();
         VBox propertyTaxInfo = new VBox();
         propertyBox.setTop(propertyInfo);
-        propertyBox.setBottom(propertyTaxInfo);
-        propertyChoiceBox.setOnAction(e->{
+        propertyBox.setCenter(propertyTaxInfo);
+        propertyChoiceBox.setOnAction(e -> {
             propertyBox.setTop(getAddressVBox(propertyChoiceBox.getValue()));
+            propertyBox.setCenter(new VBox());
             propertyTaxChoiceBox.getItems().clear();
-            for(PropertyTax tax:propertyChoiceBox.getValue().getPropertyTaxes())
-            propertyTaxChoiceBox.getItems().add(tax.getYear());
+            for (PropertyTax tax : propertyChoiceBox.getValue().getPropertyTaxes())
+                propertyTaxChoiceBox.getItems().add(tax.getYear());
         });
+        propertyTaxChoiceBox.setOnAction(e -> {
+            propertyBox.setCenter(getTaxInfoVBox(propertyChoiceBox.getValue().getPropertyTax(propertyTaxChoiceBox.getValue())));
+        });
+
+        paymentInfo.setPromptText("Payment amount");
+        paymentInfo.setOnAction(e->{
+            try{
+                filer.makeTaxPayment(propertyChoiceBox.getValue(),propertyChoiceBox.getValue().getPropertyTax(propertyTaxChoiceBox.getValue()),Double.parseDouble(paymentInfo.getText()));
+                ErrorWindow.display("Payment of "+ Double.parseDouble(paymentInfo.getText())+ "made");
+                window.setScene(ownerMenu);
+            }catch(Exception a){
+                ErrorWindow.display("Invalid payment amount");
+            }
+        });
+        quit.setOnAction(e->window.setScene(ownerMenu));
         propertyInfoWindow.setLeft(choiceVBox);
         propertyInfoWindow.setCenter(propertyBox);
-        return new Scene(propertyInfoWindow, 900, 500);
+        Scene test = new Scene(propertyInfoWindow, 900, 500);
+        window.setScene(test);
     }
 
     public VBox getAddressVBox(Property prop) {
-        int fontSize=35;
+        int fontSize = 25;
         VBox result = new VBox();
         Label owners = new Label(prop.getOwners().toString());
-        owners.setFont(new Font("",fontSize));
+        owners.setFont(new Font("", fontSize));
         Label firstLine = new Label(prop.getAddress().getFirstLine());
-        firstLine.setFont(new Font("",fontSize));
+        firstLine.setFont(new Font("", fontSize));
         Label secondLine = new Label(prop.getAddress().getSecondLine());
-        secondLine.setFont(new Font("",fontSize));
+        secondLine.setFont(new Font("", fontSize));
         Label city = new Label(prop.getAddress().getCity());
-        city.setFont(new Font("",fontSize));
+        city.setFont(new Font("", fontSize));
         Label county = new Label(prop.getAddress().getCounty());
-        county.setFont(new Font("",fontSize));
+        county.setFont(new Font("", fontSize));
         Label country = new Label(prop.getAddress().getCountry());
-        country.setFont(new Font("",fontSize));
+        country.setFont(new Font("", fontSize));
         Label eircode = new Label(prop.getEircode());
-        eircode.setFont(new Font("",fontSize));
+        eircode.setFont(new Font("", fontSize));
         Label marketvalue = new Label(prop.getMarketVal() + "");
-        marketvalue.setFont(new Font("",fontSize));
+        marketvalue.setFont(new Font("", fontSize));
         Label category = new Label(prop.getCategory());
-        category.setFont(new Font("",fontSize));
+        category.setFont(new Font("", fontSize));
         Label isPrivateRes = new Label(prop.isPrivateRes() + "");
-        isPrivateRes.setFont(new Font("",fontSize));
+        isPrivateRes.setFont(new Font("", fontSize));
         result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
+        result.setPadding(new Insets(20,20,20,20));
+        result.setSpacing(10);
+        return result;
+    }
+
+    public VBox getTaxInfoVBox(PropertyTax tax) {
+        VBox result = new VBox();
+        Label yearInfo = new Label("Year: " + tax.getYear());
+        yearInfo.setFont(new Font("", 25));
+        Label paymentData = new Label("Payments made: "+tax.getPaymentsString());
+        paymentData.setFont(new Font("", 25));
+        Label totalPaid=new Label("Total Paid:"+tax.getPaymentTotal());
+        totalPaid.setFont(new Font("", 25));
+        Label totalDue=new Label("Total Due: "+(tax.getTax()-tax.getPaymentTotal()));
+        totalDue.setFont(new Font("", 25));
+        result.getChildren().addAll(yearInfo, paymentData,totalPaid,totalDue);
         return result;
     }
 

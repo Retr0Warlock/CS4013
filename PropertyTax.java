@@ -86,6 +86,13 @@ public class PropertyTax {
         payments.add(payment);
     }
 
+    public String getPaymentsString(){
+        String result="";
+        for(Double payment:payments)
+            result+=payment+",";
+        return result;
+    }
+
     public double getPaymentTotal() {
         double result = 0;
         for (double payment : payments)
