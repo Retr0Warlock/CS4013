@@ -73,7 +73,7 @@ public class Menu_GUI extends Application {
                 ErrorWindow.display("No properties with that owner name");
                 mainStage.setScene(ownerMenu);
             } else {
-//                    mainStage.setScene(myProperties);
+                    mainStage.setScene(getPropetyScene(propertyArrayList));
             }
         });
         Button ownerButton3 = new Button("Quit");
@@ -313,13 +313,52 @@ public class Menu_GUI extends Application {
         ChosenProp.getSelectionModel().select(0);
         return ChosenProp.getValue();
     }
-    
-    /*
-    public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
-        
-    }
-    */
 
+    public Scene getPropetyScene(ArrayList<Property> properties) {
+        ChoiceBox<Property> propertyChoiceBox =new ChoiceBox<Property>();
+        for(Property prop:properties)
+            propertyChoiceBox.getItems().add(prop);
+        ChoiceBox<Year> propertyTaxChoiceBox = new ChoiceBox();
+        TextField paymentInfo = new TextField();
+        Button quit = new Button("Quit");
+
+        BorderPane propertyInfoWindow = new BorderPane();
+        VBox choiceVBox = new VBox();
+        choiceVBox.getChildren().addAll(propertyChoiceBox, propertyTaxChoiceBox, paymentInfo, quit);
+        choiceVBox.setPrefWidth(300);
+
+        BorderPane propertyBox = new BorderPane();
+        VBox propertyInfo = new VBox();
+        VBox propertyTaxInfo = new VBox();
+        propertyBox.setTop(propertyInfo);
+        propertyBox.setBottom(propertyTaxInfo);
+        propertyChoiceBox.setOnAction(e->{
+            propertyBox.setTop(getAddressVBox(propertyChoiceBox.getValue()));
+            propertyTaxChoiceBox.getItems().clear();
+            for(PropertyTax tax:propertyChoiceBox.getValue().getPropertyTaxes())
+            propertyTaxChoiceBox.getItems().add(tax.getYear());
+        });
+
+        propertyInfoWindow.setLeft(choiceVBox);
+        propertyInfoWindow.setCenter(propertyBox);
+        return new Scene(propertyInfoWindow, 900, 500);
+    }
+
+    public VBox getAddressVBox(Property prop) {
+        VBox result = new VBox();
+        Label owners = new Label(prop.getOwners().toString());
+        Label firstLine = new Label(prop.getAddress().getFirstLine());
+        Label secondLine = new Label(prop.getAddress().getSecondLine());
+        Label city = new Label(prop.getAddress().getCity());
+        Label county = new Label(prop.getAddress().getCounty());
+        Label country = new Label(prop.getAddress().getCountry());
+        Label eircode = new Label(prop.getEircode());
+        Label marketvalue = new Label(prop.getMarketVal() + "");
+        Label category = new Label(prop.getCategory());
+        Label isPrivateRes = new Label(prop.isPrivateRes() + "");
+        result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
+        return result;
+    }
 
     //generalTaxStats
     public void generalTaxStats() {
@@ -388,45 +427,6 @@ public class Menu_GUI extends Application {
 class QuitHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent e) {
         System.exit(0);
-    }
-}
-
-class PropertyInfoWindow {
-    public static Scene getPane(ArrayList<Property> properties) {
-        ChoiceBox<Property> propertyChoiceBox = new ChoiceBox((ObservableList) properties);
-        ChoiceBox<Year> propertyTaxChoiceBox = new ChoiceBox();
-        TextField paymentInfo = new TextField();
-        Button quit = new Button("Quit");
-
-        BorderPane propertyInfoWindow = new BorderPane();
-        VBox choiceVBox = new VBox();
-        choiceVBox.getChildren().addAll(propertyChoiceBox, propertyTaxChoiceBox, paymentInfo, quit);
-
-        VBox propertyBox = new VBox();
-        VBox propertyInfo = new VBox();
-        VBox propertyTaxInfo = new VBox();
-        propertyBox.getChildren().addAll(propertyInfo, propertyTaxInfo);
-
-        propertyInfoWindow.setLeft(choiceVBox);
-        propertyInfoWindow.setCenter(propertyBox);
-        return new Scene(propertyInfoWindow, 500, 500);
-    }
-}
-
-class PropertyInfo {
-    public static VBox getInfo(Property prop) {
-        VBox result = new VBox();
-        Label owners = new Label(prop.getOwners().toString());
-        Label firstLine = new Label(prop.getAddress().getFirstLine());
-        Label secondLine = new Label(prop.getAddress().getSecondLine());
-        Label city = new Label(prop.getAddress().getCity());
-        Label county = new Label(prop.getAddress().getCounty());
-        Label country = new Label(prop.getAddress().getCountry());
-        Label eircode = new Label(prop.getEircode());
-        Label marketvalue = new Label(prop.getMarketVal() + "");
-        Label category = new Label(prop.getCategory());
-        Label isPrivateRes = new Label(prop.isPrivateRes() + "");
-        result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
     }
 }
 
