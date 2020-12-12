@@ -48,7 +48,9 @@ public class Menu_GUI extends Application {
         option1.setOnAction(e -> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
         option2.setOnAction(e -> mainStage.setScene(adminMenu));
-
+        QuitHandler quitHandle = new QuitHandler();
+        option3.setOnAction(quitHandle);
+        
         mainMenuButtons.setHgap(10);
         mainMenuButtons.setVgap(10);
         mainMenuButtons.setPadding(new Insets(10, 10, 100, 10));
@@ -57,7 +59,8 @@ public class Menu_GUI extends Application {
         mainMenuButtons.add(option2, 2, 1);
         option1.setPrefWidth(mainMenu.getWidth());
         option2.setPrefWidth(mainMenu.getWidth());
-
+        option3.setPrefWidrh(mainMenu.getWidth());
+        
         header.setFont(new Font("", 35));
 
 
