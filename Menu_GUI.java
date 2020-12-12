@@ -49,6 +49,8 @@ public class Menu_GUI extends Application {
         Button option2 = new Button("Admin");
         option2.setOnAction(e -> mainStage.setScene(adminMenu));
         QuitHandler quitHandle = new QuitHandler();
+        Button option3=new Button("Quit");
+
         option3.setOnAction(quitHandle);
         
         mainMenuButtons.setHgap(10);
@@ -57,10 +59,11 @@ public class Menu_GUI extends Application {
         mainMenuButtons.setAlignment(Pos.CENTER);
         mainMenuButtons.add(option1, 1, 1);
         mainMenuButtons.add(option2, 2, 1);
+        mainMenuButtons.add(option3,3,1);
         option1.setPrefWidth(mainMenu.getWidth());
         option2.setPrefWidth(mainMenu.getWidth());
-        option3.setPrefWidrh(mainMenu.getWidth());
-        
+        option3.setPrefWidth(mainMenu.getWidth());
+
         header.setFont(new Font("", 35));
 
 
