@@ -20,15 +20,16 @@ import java.nio.channels.ClosedSelectorException;
 import java.util.*;
 import java.io.*;
 import java.time.Year;
+
 public class Menu_GUI extends Application {
-    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myProperties, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu,namePromptScene;
+    Scene mainMenu, ownerMenu, AdminMenu, AddPropertyMenu, myProperties, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
     ChoiceBox<Property> ChosenProp;
     Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue, taxData;
-    ArrayList<Property> propertyArrayList=new ArrayList<>();
+    ArrayList<Property> propertyArrayList = new ArrayList<>();
     private final PropertyFiler filer = new PropertyFiler();
-   
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -39,45 +40,44 @@ public class Menu_GUI extends Application {
         mainStage.setTitle("Main Menu");
         BorderPane main = new BorderPane();
         Label header = new Label("Select user type");
-        GridPane mainMenuButtons =new GridPane();
+        GridPane mainMenuButtons = new GridPane();
         mainMenu = new Scene(main, 900, 500);
 
         main.setCenter(header);
         main.setBottom(mainMenuButtons);
 
         Button option1 = new Button("Owner");
-        option1.setOnAction(e-> mainStage.setScene(ownerMenu));
+        option1.setOnAction(e -> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
         option2.setOnAction(e -> mainStage.setScene(AdminMenu));
 
         mainMenuButtons.setHgap(10);
         mainMenuButtons.setVgap(10);
-        mainMenuButtons.setPadding(new Insets(10,10,100,10));
+        mainMenuButtons.setPadding(new Insets(10, 10, 100, 10));
         mainMenuButtons.setAlignment(Pos.CENTER);
-        mainMenuButtons.add(option1,1,1);
-        mainMenuButtons.add(option2,2,1);
+        mainMenuButtons.add(option1, 1, 1);
+        mainMenuButtons.add(option2, 2, 1);
         option1.setPrefWidth(mainMenu.getWidth());
         option2.setPrefWidth(mainMenu.getWidth());
 
-        header.setFont(new Font("",35));
+        header.setFont(new Font("", 35));
 
 
         //OwnerMenu - Done
         Button ownerButton1 = new Button("Register a Property");
-        ownerButton1.setOnAction(e-> mainStage.setScene(AddPropertyMenu));
+        ownerButton1.setOnAction(e -> mainStage.setScene(AddPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
-        ownerButton2.setOnAction(e-> {
-                propertyArrayList=filer.search(new Owner(TextPromptWindow.display("Enter Name")));
-                if(propertyArrayList.size()==0) {
-                    ErrorWindow.display("No properties with that owner name");
-                    mainStage.setScene(ownerMenu);
-                }
-                else{
-//                    mainStage.setScene(yProperties);
-                }
+        ownerButton2.setOnAction(e -> {
+            propertyArrayList = filer.search(new Owner(TextPromptWindow.display("Enter Name")));
+            if (propertyArrayList.size() == 0) {
+                ErrorWindow.display("No properties with that owner name");
+                mainStage.setScene(ownerMenu);
+            } else {
+//                    mainStage.setScene(myProperties);
+            }
         });
         Button ownerButton3 = new Button("Quit");
-        ownerButton3.setOnAction(e->mainStage.setScene(mainMenu));
+        ownerButton3.setOnAction(e -> mainStage.setScene(mainMenu));
         HBox ownerMenuButtons = new HBox();
         ownerMenuButtons.getChildren().addAll(ownerButton1, ownerButton2, ownerButton3);
         VBox ownerMenuParent = new VBox();
@@ -86,7 +86,7 @@ public class Menu_GUI extends Application {
         ownerMenu = new Scene(ownerMenuParent, 500, 500);
 
         //Register A Property - Done
-        Label names = new Label("Owners (Comma seperated)"); 
+        Label names = new Label("Owners (Comma seperated)");
         this.Names = new TextField();
         Label address = new Label("Address");
         Label firstline = new Label("First line");
@@ -110,13 +110,13 @@ public class Menu_GUI extends Application {
         this.PrivateRes = new ChoiceBox(FXCollections.observableArrayList("Yes", "No"));
         PrivateRes.getSelectionModel().select(0);
         Button submitNew = new Button("Submit");
-        submitNew.setOnAction(e-> {
+        submitNew.setOnAction(e -> {
             AddProp();
             mainStage.setScene(ownerMenu);
         });
         Button QuitNew = new Button("Quit");
-        QuitNew.setOnAction(e-> mainStage.setScene(ownerMenu));
-        
+        QuitNew.setOnAction(e -> mainStage.setScene(ownerMenu));
+
         HBox AddPropertyFields = new HBox();
         AddPropertyFields.getChildren().addAll(names, Names, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, eircode, Eircode, MarketVal, MarketValue, catagory, Catagory, privateRes, PrivateRes, submitNew, QuitNew);
         VBox AddPropertyParent = new VBox();
@@ -127,54 +127,54 @@ public class Menu_GUI extends Application {
         //ListProperties - WIP
         this.ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
         this.Amount = new TextField();
-        
+
         Button Pay = new Button("Pay");
-        
+
         Button listQuit = new Button("Quit");
-        listQuit.setOnAction(e->mainStage.setScene(ownerMenu));
+        listQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
         HBox ListPropFields = new HBox();
         ListPropFields.getChildren().addAll(ChosenProp, Firstline, Amount, Pay, listQuit);
         VBox ListPropParent = new VBox();
         addInfo = new Label("");
         ListPropParent.getChildren().addAll(ListPropFields, addInfo);
         ListPropMenu = new Scene(ListPropParent, 600, 600);
-        
+
         //Get Tax Due - Done
         this.taxYear = new TextField();
         Button taxGet = new Button("Get Tax Due");
-        taxGet.setOnAction(e->getTaxDue());
-        this.getTaxYear = new Label ("");
-        Label enterYear = new Label ("Enter a year to view total tax due for all owned properties that year: ");
-        this.getTax = new Label ("");
+        taxGet.setOnAction(e -> getTaxDue());
+        this.getTaxYear = new Label("");
+        Label enterYear = new Label("Enter a year to view total tax due for all owned properties that year: ");
+        this.getTax = new Label("");
         Button taxQuit = new Button("Quit");
-        taxQuit.setOnAction(e->mainStage.setScene(ownerMenu));
+        taxQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
         HBox getTaxFields = new HBox();
         getTaxFields.getChildren().addAll(enterYear, getTax, taxYear, taxGet, taxQuit, getTaxYear);
         VBox getTaxParent = new VBox();
         getTaxParent.getChildren().addAll(getTaxFields);
         getTaxDueMenu = new Scene(getTaxParent, 400, 400);
-        
-        
+
+
         //AdminMenu - Done
         Button AdminButton1 = new Button("Search Tax Data");
-        AdminButton1.setOnAction(e->mainStage.setScene(searchTaxMenu));
+        AdminButton1.setOnAction(e -> mainStage.setScene(searchTaxMenu));
         Button AdminButton2 = new Button("Overdue Tax");
-        AdminButton2.setOnAction(e->mainStage.setScene(overdueTaxMenu));
+        AdminButton2.setOnAction(e -> mainStage.setScene(overdueTaxMenu));
         Button AdminButton3 = new Button("General Tax Statistics");
-        AdminButton3.setOnAction(e->mainStage.setScene(generalStatsMenu));
+        AdminButton3.setOnAction(e -> mainStage.setScene(generalStatsMenu));
         Button AdminButton4 = new Button("Quit");
-        AdminButton4.setOnAction(e->mainStage.setScene(mainMenu));
+        AdminButton4.setOnAction(e -> mainStage.setScene(mainMenu));
         HBox AdminMenuButtons = new HBox();
         AdminMenuButtons.getChildren().addAll(AdminButton1, AdminButton2, AdminButton3, AdminButton4);
         VBox AdminMenuParent = new VBox();
         Label AdminMenuLabel = new Label("Choose Admin menu option");
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
         AdminMenu = new Scene(AdminMenuParent, 500, 500);
-        
+
         //Search Tax Data - WIP - Requires ChooseProperty method to work.
-        this.searchOwner= new TextField();
+        this.searchOwner = new TextField();
         Button searchForOwner = new Button("Search by Owner");
-        
+
         firstline = new Label("First Line");
         this.Firstline = new TextField();
         secondline = new Label("Second line");
@@ -186,74 +186,76 @@ public class Menu_GUI extends Application {
         country = new Label("Country");
         this.Country = new TextField();
         Button searchForAddress = new Button("Search by Address");
-        
+
         Button listAll = new Button("List All Properties");
         this.taxData = new Label("");
         Button searchQuit = new Button("Quit");
-        searchQuit.setOnAction(e->mainStage.setScene(AdminMenu));
+        searchQuit.setOnAction(e -> mainStage.setScene(AdminMenu));
         HBox searchTaxFields = new HBox();
         searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, Firstline, secondline, Secondline, city, City, county, County, country, Country, searchForAddress, listAll, taxData, searchQuit);
         VBox searchTaxParent = new VBox();
         this.searchTaxLabel = new Label("");
         searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
         searchTaxMenu = new Scene(searchTaxParent, 500, 500);
-        
+
         //Overdue Tax - Done
         Button searchOverdue = new Button("Search");
-        searchOverdue.setOnAction(e->OverDueTax());
-        Label overduerouting= new Label("Routing Key (Leave Blank to Ignore)");
+        searchOverdue.setOnAction(e -> OverDueTax());
+        Label overduerouting = new Label("Routing Key (Leave Blank to Ignore)");
         this.overdueRouting = new TextField();
         Label overdueyear = new Label("Year (Leave Blank to Ignore)");
         this.overdueYear = new TextField();
         this.totalOverdue = new Label("");
         Button overdueQuit = new Button("Quit");
-        overdueQuit.setOnAction(e->mainStage.setScene(AdminMenu));
+        overdueQuit.setOnAction(e -> mainStage.setScene(AdminMenu));
         HBox overdueTaxFields = new HBox();
         overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, totalOverdue, overdueQuit);
         VBox overdueTaxParent = new VBox();
         this.overdueTaxLabel = new Label("");
         overdueTaxParent.getChildren().addAll(overdueTaxLabel, overdueTaxFields);
         overdueTaxMenu = new Scene(overdueTaxParent, 500, 500);
-        
+
         //General Tax Statistics - Done
         Button showStats = new Button("Show Statistics");
-        showStats.setOnAction(e->generalTaxStats());
+        showStats.setOnAction(e -> generalTaxStats());
         this.generalRouting = new TextField();
         generalTaxStats = new Label("");
         Button generalQuit = new Button("Quit");
-        generalQuit.setOnAction(e->mainStage.setScene(AdminMenu));
+        generalQuit.setOnAction(e -> mainStage.setScene(AdminMenu));
         HBox generalStatsFields = new HBox();
         generalStatsFields.getChildren().addAll(generalRouting, showStats, generalTaxStats, generalQuit);
         VBox generalStatsParent = new VBox();
         this.generalStatsLabel = new Label("Routing Key (Leave Blank to ignore)");
         generalStatsParent.getChildren().addAll(generalStatsLabel, generalStatsFields);
         generalStatsMenu = new Scene(generalStatsParent, 500, 500);
-        
-        
+
+
         mainStage.setScene(mainMenu);
         mainStage.show();
     }
-    
+
     //Search Tax Data
     public void searchTaxDataAllProp() {
         ArrayList<Property> properties;
-        properties= filer.read();
+        properties = filer.read();
         Property propChoice = chooseProperty(properties);
         String temp = "";
         for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
             temp = temp + (tax.getSummary() + "\n");
         taxData.setText(temp);
     }
+
     public void searchTaxDataByName() {
         ArrayList<Property> properties;
         String name = searchOwner.getText();
-        properties=filer.search(new Owner(name));
+        properties = filer.search(new Owner(name));
         Property propChoice = chooseProperty(properties);
         String temp = "";
         for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
             temp = temp + (tax.getSummary() + "\n");
         taxData.setText(temp);
     }
+
     public void searchTaxDataByAddress() {
         ArrayList<Property> properties;
         String firstline = this.Firstline.getText();
@@ -261,15 +263,15 @@ public class Menu_GUI extends Application {
         String city = this.City.getText();
         String county = this.County.getText();
         String country = this.Country.getText();
-        properties=filer.search(new Address(firstline, secondline, city, county, country));
+        properties = filer.search(new Address(firstline, secondline, city, county, country));
         Property propChoice = chooseProperty(properties);
         String temp = "";
         for (PropertyTax tax : propChoice.getPropertyTaxes()) //display tax data for the property
             temp = temp + (tax.getSummary() + "\n");
         taxData.setText(temp);
     }
-    
-    
+
+
     //Overdue Tax
     public void OverDueTax() {
         String searchCode = overdueRouting.getText();
@@ -285,7 +287,7 @@ public class Menu_GUI extends Application {
                         overDueTax += tax.getTax() - tax.getPaymentTotal();
         totalOverdue.setText("Total tax overdue: " + overDueTax);
     }
-    
+
     public void ListProperties_PayTax() {
         /*String choice = Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
@@ -305,7 +307,7 @@ public class Menu_GUI extends Application {
             }
         window.setScene(ListPropMenu); */
     }
-    
+
     public Property chooseProperty(ArrayList<Property> propertyList) {
         ChosenProp = new ChoiceBox(FXCollections.observableArrayList(propertyList));
         ChosenProp.getSelectionModel().select(0);
@@ -317,8 +319,8 @@ public class Menu_GUI extends Application {
         
     }
     */
-    
-    
+
+
     //generalTaxStats
     public void generalTaxStats() {
         double totalTaxPaid = 0;
@@ -333,9 +335,9 @@ public class Menu_GUI extends Application {
                 noPropTaxPaid++;
         generalTaxStats.setText("Total tax paid: " + totalTaxPaid + "\nAverage tax paid: " + averageTaxPaid + "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
     }
-    
+
     //Get Tax Due
-     public void getTaxDue() {
+    public void getTaxDue() {
         String choice = this.Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
         double totalTaxDue = 0;
@@ -355,9 +357,9 @@ public class Menu_GUI extends Application {
         }
         getTaxYear.setText("Total due for " + yearChoice + ": " + annualTotalDue);
     }
-    
+
     //Register A Property
-    public void AddProp(){
+    public void AddProp() {
         ArrayList<Owner> owners = new ArrayList<Owner>();
         String names = this.Names.getText();
         for (String str : names.split(",")) {
@@ -389,55 +391,93 @@ class QuitHandler implements EventHandler<ActionEvent> {
     }
 }
 
-class TextPromptWindow{
-    static String result="";
+class PropertyInfoWindow {
+    public static Scene getPane(ArrayList<Property> properties) {
+        ChoiceBox<Property> propertyChoiceBox = new ChoiceBox((ObservableList) properties);
+        ChoiceBox<Year> propertyTaxChoiceBox = new ChoiceBox();
+        TextField paymentInfo = new TextField();
+        Button quit = new Button("Quit");
 
+        BorderPane propertyInfoWindow = new BorderPane();
+        VBox choiceVBox = new VBox();
+        choiceVBox.getChildren().addAll(propertyChoiceBox, propertyTaxChoiceBox, paymentInfo, quit);
+
+        VBox propertyBox = new VBox();
+        VBox propertyInfo = new VBox();
+        VBox propertyTaxInfo = new VBox();
+        propertyBox.getChildren().addAll(propertyInfo, propertyTaxInfo);
+
+        propertyInfoWindow.setLeft(choiceVBox);
+        propertyInfoWindow.setCenter(propertyBox);
+        return new Scene(propertyInfoWindow, 500, 500);
+    }
+}
+
+class PropertyInfo {
+    public static VBox getInfo(Property prop) {
+        VBox result = new VBox();
+        Label owners = new Label(prop.getOwners().toString());
+        Label firstLine = new Label(prop.getAddress().getFirstLine());
+        Label secondLine = new Label(prop.getAddress().getSecondLine());
+        Label city = new Label(prop.getAddress().getCity());
+        Label county = new Label(prop.getAddress().getCounty());
+        Label country = new Label(prop.getAddress().getCountry());
+        Label eircode = new Label(prop.getEircode());
+        Label marketvalue = new Label(prop.getMarketVal() + "");
+        Label category = new Label(prop.getCategory());
+        Label isPrivateRes = new Label(prop.isPrivateRes() + "");
+        result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
+    }
+}
+
+class TextPromptWindow {
     public static String display(String prompt) {
-        Stage textPromptWindow=new Stage();
+        Stage textPromptWindow = new Stage();
         textPromptWindow.initModality(Modality.APPLICATION_MODAL);
         textPromptWindow.setTitle(prompt);
 
-        Label myProperyLabel=new Label(prompt);
-        myProperyLabel.setFont(new Font("",25));
+        Label myProperyLabel = new Label(prompt);
+        myProperyLabel.setFont(new Font("", 25));
 
-        TextField userInput=new TextField();
-        Button ownerEnter=new Button("Enter");
-        ownerEnter.setOnAction(e-> {
+        TextField userInput = new TextField();
+        Button ownerEnter = new Button("Enter");
+        ownerEnter.setOnAction(e -> {
             textPromptWindow.close();
         });
-        Button quit=new Button("Quit");
-        ownerEnter.setOnAction(e->textPromptWindow.close());
+        Button quit = new Button("Quit");
+        quit.setOnAction(e -> textPromptWindow.close());
 
         userInput.setPromptText(prompt);
-        BorderPane namePromptPane=new BorderPane();
+        BorderPane namePromptPane = new BorderPane();
 
-        HBox namePromptBottom=new HBox();
+        HBox namePromptBottom = new HBox();
         namePromptBottom.setAlignment(Pos.CENTER);
         namePromptBottom.setSpacing(5);
-        namePromptBottom.getChildren().addAll(userInput,ownerEnter,quit);
+        namePromptBottom.getChildren().addAll(userInput, ownerEnter, quit);
 
         namePromptPane.setCenter(myProperyLabel);
         namePromptPane.setBottom(namePromptBottom);
-        namePromptPane.setPadding(new Insets(10,10,100,10));
+        namePromptPane.setPadding(new Insets(10, 10, 50, 10));
 
-        Scene scene=new Scene(namePromptPane,400,400);
+        Scene scene = new Scene(namePromptPane, 400, 200);
         textPromptWindow.setScene(scene);
         textPromptWindow.showAndWait();
 
         return userInput.getText();
     }
 }
+
 class ErrorWindow {
-    public static void display(String errorMessage){
-        Stage errorWindow=new Stage();
+    public static void display(String errorMessage) {
+        Stage errorWindow = new Stage();
         errorWindow.initModality(Modality.APPLICATION_MODAL);
         errorWindow.setTitle("Error");
 
-        Label errorLabel=new Label(errorMessage);
+        Label errorLabel = new Label(errorMessage);
 
-        StackPane main=new StackPane();
+        StackPane main = new StackPane();
         main.getChildren().add(errorLabel);
-        Scene scene=new Scene(main,500,100);
+        Scene scene = new Scene(main, 500, 100);
         errorWindow.setScene(scene);
         errorWindow.show();
     }
