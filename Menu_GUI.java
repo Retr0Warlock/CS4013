@@ -141,21 +141,6 @@ public class Menu_GUI extends Application {
         AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
         addPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
 
-        //ListProperties - WIP
-        this.ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
-        this.amount = new TextField();
-
-        Button Pay = new Button("Pay");
-
-        Button listQuit = new Button("Quit");
-        listQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
-        HBox ListPropFields = new HBox();
-        ListPropFields.getChildren().addAll(ChosenProp, firstLine, amount, Pay, listQuit);
-        VBox ListPropParent = new VBox();
-        addInfo = new Label("");
-        ListPropParent.getChildren().addAll(ListPropFields, addInfo);
-        listPropMenu = new Scene(ListPropParent, 600, 600);
-
         //Get Tax Due - Done
         this.taxYear = new TextField();
         Button taxGet = new Button("Get Tax Due");
@@ -321,7 +306,7 @@ public class Menu_GUI extends Application {
             for (PropertyTax tax : propertyChoiceBox.getValue().getPropertyTaxes()) //display tax data for the property
                 temp = temp + (tax.getSummary() + "\n");
             ErrorWindow.display(temp);
-            window.setScene(ownerMenu);
+            window.setScene(adminMenu);
         });
         propertyInfoWindow.setLeft(choiceVBox);
         propertyInfoWindow.setCenter(propertyBox);
