@@ -25,7 +25,6 @@ public class Menu_GUI extends Application {
     Scene mainMenu, ownerMenu, adminMenu, addPropertyMenu, myProperties, listPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
     TextField Names, firstLine, secondLine, city, county, eircode, marketValue, country, amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> category, privateRes;
-    ChoiceBox<Property> ChosenProp;
     Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue, taxData;
     ArrayList<Property> propertyArrayList = new ArrayList<>();
     private final PropertyFiler filer = new PropertyFiler();
@@ -103,56 +102,44 @@ public class Menu_GUI extends Application {
         ownerMenuParent.setBottom(ownerMenuButtons);
 
         //Register A Property - Done
-        TextField addPropNames = new TextField();
-        TextField addPropFirstLine = new TextField();
-        TextField addPropSecondLine = new TextField();
-        TextField addPropCity = new TextField();
-        TextField addPropCounty = new TextField();
-        TextField addPropCountry = new TextField();
-        TextField addPropEircode = new TextField();
-        ChoiceBox addPropCategory = new ChoiceBox(FXCollections.observableArrayList("City", "Large Town", "Small Town", "Village", "Countryside"));
-        TextField addPropMarketValue = new TextField();
-        ChoiceBox addPropPrivateRes = new ChoiceBox(FXCollections.observableArrayList("true", "false"));
-        addPropPrivateRes.getSelectionModel().select(0);
+        Label names = new Label("Owners (Comma seperated)");
+        this.Names = new TextField();
+        Label address = new Label("Address");
+        Label firstline = new Label("First line");
+        this.firstLine = new TextField();
+        Label secondline = new Label("Second line");
+        this.secondLine = new TextField();
+        Label city = new Label("City");
+        this.city = new TextField();
+        Label county = new Label("County");
+        this.county = new TextField();
+        Label country = new Label("Country");
+        this.country = new TextField();
+        Label eircode = new Label("Eircode");
+        this.eircode = new TextField();
+        Label MarketVal = new Label("Market Value");
+        this.marketValue = new TextField();
+        Label catagory = new Label("Catagory");
+        this.category = new ChoiceBox(FXCollections.observableArrayList("City", "Large Town", "Small Town", "Village", "Countryside"));
+        category.getSelectionModel().select(0);
+        Label privateRes = new Label("Private Residence");
+        this.privateRes = new ChoiceBox(FXCollections.observableArrayList("Yes", "No"));
+        this.privateRes.getSelectionModel().select(0);
         Button submitNew = new Button("Submit");
         submitNew.setOnAction(e -> {
-            ArrayList<Owner> owners=new ArrayList<>();
-            for(String owner:addPropNames.getText().split(","))
-                owners.add(new Owner(owner));
-            try {
-                filer.add(new Property(owners,new Address(addPropFirstLine.getText(),addPropSecondLine.getText(),addPropCity.getText(),addPropCounty.getText(),addPropCountry.getText()),
-                        addPropEircode.getText(),Double.parseDouble(addPropMarketValue.getText()),addPropCategory.getValue().toString(),Boolean.parseBoolean(addPropPrivateRes.getValue().toString())));
-                mainStage.setScene(ownerMenu);
-            } catch (Exception a) {
-                ErrorWindow.display("Invalid property info");
-            }
+            AddProp();
+            mainStage.setScene(ownerMenu);
         });
         Button QuitNew = new Button("Quit");
         QuitNew.setOnAction(e -> mainStage.setScene(ownerMenu));
-        VBox addPropertyFields = new VBox();
-        addPropertyFields.getChildren().addAll(new Label("Names(comma separated)"), addPropNames, new Label("First Line"), addPropFirstLine, new Label("Second Line"),addPropSecondLine,
-                new Label("City"), addPropCity,new Label("County"), addPropCounty,new Label("Country") , addPropCountry, new Label("Eircode"), addPropEircode, new Label("Market Value"),
-                 addPropMarketValue, new Label("Category") ,addPropCategory,new Label("Private Residence") ,addPropPrivateRes, submitNew, QuitNew);
-        addPropertyFields.setSpacing(10);
-        addPropertyFields.setPadding(new Insets(10,10,10,10));
-        VBox addPropertyParent = new VBox();
-        addPropertyParent.getChildren().add(addPropertyFields);
-        addPropertyMenu = new Scene(addPropertyParent, windowSizeX, windowSizeY*1.5);
 
-        //ListProperties - WIP
-        this.ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
-        this.amount = new TextField();
-
-        Button Pay = new Button("Pay");
-
-        Button listQuit = new Button("Quit");
-        listQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
-        HBox ListPropFields = new HBox();
-//        ListPropFields.getChildren().addAll(ChosenProp, firstLine, amount, Pay, listQuit);
-        VBox ListPropParent = new VBox();
-        addInfo = new Label("");
-        ListPropParent.getChildren().addAll(ListPropFields, addInfo);
-        listPropMenu = new Scene(ListPropParent, 600, 600);
+        HBox AddPropertyFields = new HBox();
+        AddPropertyFields.getChildren().addAll(names, Names, firstline, firstLine, secondline, secondLine, city, this.city, county, this.county, country, this.country, eircode, this.eircode, MarketVal, marketValue, catagory, category, privateRes, this.privateRes, submitNew, QuitNew);
+        VBox AddPropertyParent = new VBox();
+        Label AddPropertyLabel = new Label("Fill All Fields");
+        AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
+        addPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
+        
 
         //Get Tax Due - Done
         this.taxYear = new TextField();
@@ -190,15 +177,15 @@ public class Menu_GUI extends Application {
         this.searchOwner = new TextField();
         Button searchForOwner = new Button("Search by Owner");
         searchForOwner.setOnAction(e -> searchTaxDataByName());
-        Label firstline = new Label("First Line");
+        firstline = new Label("First Line");
         this.firstLine = new TextField();
-        Label secondline = new Label("Second line");
+        secondline = new Label("Second line");
         this.secondLine = new TextField();
-        Label city = new Label("City");
+        city = new Label("City");
         this.city = new TextField();
-        Label county = new Label("County");
+        county = new Label("County");
         this.county = new TextField();
-        Label country = new Label("Country");
+        country = new Label("Country");
         this.country = new TextField();
         Button searchForAddress = new Button("Search by Address");
         searchForAddress.setOnAction(e -> searchTaxDataByAddress());
@@ -208,7 +195,7 @@ public class Menu_GUI extends Application {
         Button searchQuit = new Button("Quit");
         searchQuit.setOnAction(e -> mainStage.setScene(adminMenu));
         HBox searchTaxFields = new HBox();
-//        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, firstLine, secondline, secondLine, city, this.city, county, this.county, country, this.country, searchForAddress, listAll, taxData, searchQuit);
+        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, firstLine, secondline, secondLine, city, this.city, county, this.county, country, this.country, searchForAddress, listAll, taxData, searchQuit);
         VBox searchTaxParent = new VBox();
         this.searchTaxLabel = new Label("");
         searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
@@ -255,7 +242,6 @@ public class Menu_GUI extends Application {
         ArrayList<Property> properties;
         properties = filer.read();
         chooseProperty(properties);
-        
     }
 
     public void searchTaxDataByName() {
@@ -293,7 +279,6 @@ public class Menu_GUI extends Application {
         totalOverdue.setText("Total tax overdue: " + overDueTax);
     }
 
-    
     public void chooseProperty(ArrayList<Property> propertyList) {
         ObservableList<Property> props = FXCollections.observableArrayList(propertyList);
         ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
@@ -323,8 +308,8 @@ public class Menu_GUI extends Application {
         });
         propertyInfoWindow.setLeft(choiceVBox);
         propertyInfoWindow.setCenter(propertyBox);
-        Scene test = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
-        window.setScene(test);
+        Scene TaxData = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
+        window.setScene(TaxData);
     }
 
     public void getPropertyScene(ArrayList<Property> properties) {
