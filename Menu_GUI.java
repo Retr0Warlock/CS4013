@@ -1,3 +1,4 @@
+import com.sun.javafx.css.CalculatedValue;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,15 +15,18 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.collections.*;
 import javafx.beans.value.*;
+
+import java.nio.channels.ClosedSelectorException;
 import java.util.*;
 import java.io.*;
 import java.time.Year;
 public class Menu_GUI extends Application {
-    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myPropertiesMenu, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu;
+    Scene mainMenu,ownerMenu, AdminMenu, AddPropertyMenu, myProperties, ListPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu,namePromptScene;
     TextField Names, Firstline, Secondline, City, County, Eircode, MarketValue, Country, Amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> Catagory, PrivateRes;
     ChoiceBox<Property> ChosenProp;
     Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue, taxData;
+    ArrayList<Property> propertyArrayList=new ArrayList<>();
     private final PropertyFiler filer = new PropertyFiler();
    
     public static void main(String[] args) {
@@ -33,32 +37,45 @@ public class Menu_GUI extends Application {
     public void start(Stage mainStage) {
         //Main menu - Done
         mainStage.setTitle("Main Menu");
+        BorderPane main = new BorderPane();
+        Label header = new Label("Select user type");
+        GridPane mainMenuButtons =new GridPane();
+        mainMenu = new Scene(main, 900, 500);
+
+        main.setCenter(header);
+        main.setBottom(mainMenuButtons);
 
         Button option1 = new Button("Owner");
         option1.setOnAction(e-> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
-        option2.setOnAction(e-> ErrorWindow.display("test"));
-        Button option3 = new Button("Quit");
-        QuitHandler quitHandle = new QuitHandler();
-        option3.setOnAction(quitHandle);
-        HBox buttons =new HBox();
-        buttons.getChildren().addAll(option1,option2,option3);
-        buttons.setAlignment(Pos.CENTER);
+        option2.setOnAction(e -> mainStage.setScene(AdminMenu));
 
-        BorderPane main = new BorderPane();
+        mainMenuButtons.setHgap(10);
+        mainMenuButtons.setVgap(10);
+        mainMenuButtons.setPadding(new Insets(10,10,100,10));
+        mainMenuButtons.setAlignment(Pos.CENTER);
+        mainMenuButtons.add(option1,1,1);
+        mainMenuButtons.add(option2,2,1);
+        option1.setPrefWidth(mainMenu.getWidth());
+        option2.setPrefWidth(mainMenu.getWidth());
 
-        Label header = new Label("Choose user type");
-        header.setFont(new Font("Arial", 20));
-        main.setCenter(header);
-        main.setBottom(buttons);
-        mainMenu = new Scene(main, 500, 500);
+        header.setFont(new Font("",35));
 
 
         //OwnerMenu - Done
         Button ownerButton1 = new Button("Register a Property");
         ownerButton1.setOnAction(e-> mainStage.setScene(AddPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
-        ownerButton2.setOnAction(e-> mainStage.setScene(myPropertiesMenu));
+        ownerButton2.setOnAction(e-> {
+                propertyArrayList=filer.search(new Owner(TextPromptWindow.display("Enter Name")));
+                if(propertyArrayList.size()==0) {
+                    ErrorWindow.display("No properties with that owner name");
+                    mainStage.setScene(ownerMenu);
+                }
+                else{
+//                    mainStage.setScene(yProperties);
+                }
+        });
         Button ownerButton3 = new Button("Quit");
         ownerButton3.setOnAction(e->mainStage.setScene(mainMenu));
         HBox ownerMenuButtons = new HBox();
@@ -67,8 +84,7 @@ public class Menu_GUI extends Application {
         Label ownerMenuLabel = new Label("Choose Owner menu option");
         ownerMenuParent.getChildren().addAll(ownerMenuLabel, ownerMenuButtons);
         ownerMenu = new Scene(ownerMenuParent, 500, 500);
-        
-        
+
         //Register A Property - Done
         Label names = new Label("Owners (Comma seperated)"); 
         this.Names = new TextField();
@@ -107,24 +123,7 @@ public class Menu_GUI extends Application {
         Label AddPropertyLabel = new Label("Fill All Fields");
         AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
         AddPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
-        
-        
-        
-        //My Property - Done
-        this.Names = new TextField();
-        Button listProp = new Button("List Properties / Pay Tax");
-        //listProp.setOnAction(e-> ListProperties_PayTax());
-        Button taxDue = new Button("Get tax due");
-        taxDue.setOnAction(e->mainStage.setScene(getTaxDueMenu));
-        Button myPropQuit = new Button("Quit");
-        myPropQuit.setOnAction(e -> mainStage.setScene(ownerMenu));
-        HBox myPropertiesFields = new HBox(); 
-        myPropertiesFields.getChildren().addAll(Names, listProp, taxDue, myPropQuit);
-        VBox myPropertiesParent = new VBox();
-        Label ownerName = new Label("Fill the name of the Owner and select one of the following options.");
-        myPropertiesParent.getChildren().addAll(ownerName, myPropertiesFields);
-        myPropertiesMenu = new Scene(myPropertiesParent, 500, 500);
-        
+
         //ListProperties - WIP
         this.ChosenProp = new ChoiceBox(FXCollections.observableArrayList());
         this.Amount = new TextField();
@@ -390,6 +389,44 @@ class QuitHandler implements EventHandler<ActionEvent> {
     }
 }
 
+class TextPromptWindow{
+    static String result="";
+
+    public static String display(String prompt) {
+        Stage textPromptWindow=new Stage();
+        textPromptWindow.initModality(Modality.APPLICATION_MODAL);
+        textPromptWindow.setTitle(prompt);
+
+        Label myProperyLabel=new Label(prompt);
+        myProperyLabel.setFont(new Font("",25));
+
+        TextField userInput=new TextField();
+        Button ownerEnter=new Button("Enter");
+        ownerEnter.setOnAction(e-> {
+            textPromptWindow.close();
+        });
+        Button quit=new Button("Quit");
+        ownerEnter.setOnAction(e->textPromptWindow.close());
+
+        userInput.setPromptText(prompt);
+        BorderPane namePromptPane=new BorderPane();
+
+        HBox namePromptBottom=new HBox();
+        namePromptBottom.setAlignment(Pos.CENTER);
+        namePromptBottom.setSpacing(5);
+        namePromptBottom.getChildren().addAll(userInput,ownerEnter,quit);
+
+        namePromptPane.setCenter(myProperyLabel);
+        namePromptPane.setBottom(namePromptBottom);
+        namePromptPane.setPadding(new Insets(10,10,100,10));
+
+        Scene scene=new Scene(namePromptPane,400,400);
+        textPromptWindow.setScene(scene);
+        textPromptWindow.showAndWait();
+
+        return userInput.getText();
+    }
+}
 class ErrorWindow {
     public static void display(String errorMessage){
         Stage errorWindow=new Stage();
@@ -403,7 +440,5 @@ class ErrorWindow {
         Scene scene=new Scene(main,500,100);
         errorWindow.setScene(scene);
         errorWindow.show();
-
-
     }
 }
