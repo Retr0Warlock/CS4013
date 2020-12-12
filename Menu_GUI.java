@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.css.Size;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +19,8 @@ import java.io.*;
 import java.time.Year;
 
 public class Menu_GUI extends Application {
+    int windowSizeX=700;
+    int windowSizeY=500;
     Stage window;
     Scene mainMenu, ownerMenu, adminMenu, addPropertyMenu, myProperties, listPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
     TextField Names, firstLine, secondLine, city, county, eircode, marketValue, country, amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
@@ -39,7 +42,7 @@ public class Menu_GUI extends Application {
         BorderPane main = new BorderPane();
         Label header = new Label("Select user type");
         GridPane mainMenuButtons = new GridPane();
-        mainMenu = new Scene(main, 700, 500);
+        mainMenu = new Scene(main, windowSizeX, windowSizeY);
 
         main.setCenter(header);
         main.setBottom(mainMenuButtons);
@@ -68,27 +71,37 @@ public class Menu_GUI extends Application {
 
 
         //OwnerMenu - Done
+        BorderPane ownerMenuParent = new BorderPane();
+        ownerMenu = new Scene(ownerMenuParent, windowSizeX, windowSizeY);
         Button ownerButton1 = new Button("Register a Property");
+        ownerButton1.setPrefWidth(ownerMenu.getWidth());
         ownerButton1.setOnAction(e -> mainStage.setScene(addPropertyMenu));
         Button ownerButton2 = new Button("My Properties");
+        ownerButton2.setPrefWidth(ownerMenu.getWidth());
         ownerButton2.setOnAction(e -> {
             propertyArrayList = filer.search(new Owner(TextPromptWindow.display("Enter Name")));
             if (propertyArrayList.size() == 0) {
                 ErrorWindow.display("No properties with that owner name");
                 mainStage.setScene(ownerMenu);
             } else {
-//                    mainStage.setScene(getPropertyScene(propertyArrayList));
                 getPropertyScene(propertyArrayList);
             }
         });
         Button ownerButton3 = new Button("Quit");
+        ownerButton3.setPrefWidth(ownerMenu.getWidth());
         ownerButton3.setOnAction(e -> mainStage.setScene(mainMenu));
-        HBox ownerMenuButtons = new HBox();
-        ownerMenuButtons.getChildren().addAll(ownerButton1, ownerButton2, ownerButton3);
-        VBox ownerMenuParent = new VBox();
+        GridPane ownerMenuButtons = new GridPane();
+        ownerMenuButtons.add(ownerButton1,1,1);
+        ownerMenuButtons.add(ownerButton2,2,1);
+        ownerMenuButtons.add(ownerButton3,3,1);
+        ownerMenuButtons.setHgap(10);
+        ownerMenuButtons.setVgap(10);
+        ownerMenuButtons.setPadding(new Insets(10, 10, 100, 10));
+        ownerMenuButtons.setAlignment(Pos.CENTER);
         Label ownerMenuLabel = new Label("Choose Owner menu option");
-        ownerMenuParent.getChildren().addAll(ownerMenuLabel, ownerMenuButtons);
-        ownerMenu = new Scene(ownerMenuParent, 500, 500);
+        ownerMenuLabel.setFont(new Font("",35));
+        ownerMenuParent.setCenter(ownerMenuLabel);
+        ownerMenuParent.setBottom(ownerMenuButtons);
 
         //Register A Property - Done
         Label names = new Label("Owners (Comma seperated)");
