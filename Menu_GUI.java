@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.css.Size;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,10 +18,10 @@ import java.io.*;
 import java.time.Year;
 
 public class Menu_GUI extends Application {
-    int windowSizeX=700;
-    int windowSizeY=500;
+    int windowSizeX = 700;
+    int windowSizeY = 500;
     Stage window;
-    Scene mainMenu, ownerMenu, adminMenu, addPropertyMenu, myProperties, listPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
+    Scene mainMenu, ownerMenu, adminMenu, regPropertyMenu,addPropertyMenu, myProperties, listPropMenu, overdueTaxMenu, generalStatsMenu, searchTaxMenu, getTaxDueMenu, namePromptScene;
     TextField Names, firstLine, secondLine, city, county, eircode, marketValue, country, amount, taxYear, searchOwner, searchAddress, overdueRouting, overdueYear, generalRouting;
     ChoiceBox<String> category, privateRes;
     Label searchTaxLabel, overdueTaxLabel, generalStatsLabel, addInfo, getTax, getTaxYear, generalTaxStats, totalOverdue, taxData;
@@ -51,17 +50,17 @@ public class Menu_GUI extends Application {
         Button option2 = new Button("Admin");
         option2.setOnAction(e -> mainStage.setScene(adminMenu));
         QuitHandler quitHandle = new QuitHandler();
-        Button option3=new Button("Quit");
+        Button option3 = new Button("Quit");
 
         option3.setOnAction(quitHandle);
-        
+
         mainMenuButtons.setHgap(10);
         mainMenuButtons.setVgap(10);
         mainMenuButtons.setPadding(new Insets(10, 10, 100, 10));
         mainMenuButtons.setAlignment(Pos.CENTER);
         mainMenuButtons.add(option1, 1, 1);
         mainMenuButtons.add(option2, 2, 1);
-        mainMenuButtons.add(option3,3,1);
+        mainMenuButtons.add(option3, 3, 1);
         option1.setPrefWidth(mainMenu.getWidth());
         option2.setPrefWidth(mainMenu.getWidth());
         option3.setPrefWidth(mainMenu.getWidth());
@@ -89,17 +88,54 @@ public class Menu_GUI extends Application {
         ownerButton3.setPrefWidth(ownerMenu.getWidth());
         ownerButton3.setOnAction(e -> mainStage.setScene(mainMenu));
         GridPane ownerMenuButtons = new GridPane();
-        ownerMenuButtons.add(ownerButton1,1,1);
-        ownerMenuButtons.add(ownerButton2,2,1);
-        ownerMenuButtons.add(ownerButton3,3,1);
+        ownerMenuButtons.add(ownerButton1, 1, 1);
+        ownerMenuButtons.add(ownerButton2, 2, 1);
+        ownerMenuButtons.add(ownerButton3, 3, 1);
         ownerMenuButtons.setHgap(10);
         ownerMenuButtons.setVgap(10);
         ownerMenuButtons.setPadding(new Insets(10, 10, 100, 10));
         ownerMenuButtons.setAlignment(Pos.CENTER);
         Label ownerMenuLabel = new Label("Choose Owner menu option");
-        ownerMenuLabel.setFont(new Font("",35));
+        ownerMenuLabel.setFont(new Font("", 35));
         ownerMenuParent.setCenter(ownerMenuLabel);
         ownerMenuParent.setBottom(ownerMenuButtons);
+
+        //New add property
+        TextField addPropNames = new TextField();
+        TextField addPropFirstLine = new TextField();
+        TextField addPropSecondLine = new TextField();
+        TextField addPropCity = new TextField();
+        TextField addPropCounty = new TextField();
+        TextField addPropCountry = new TextField();
+        TextField addPropEircode = new TextField();
+        ChoiceBox addPropCategory = new ChoiceBox(FXCollections.observableArrayList("City", "Large Town", "Small Town", "Village", "Countryside"));
+        TextField addPropMarketValue = new TextField();
+        ChoiceBox addPropPrivateRes = new ChoiceBox(FXCollections.observableArrayList("true", "false"));
+        addPropPrivateRes.getSelectionModel().select(0);
+        Button addPropSubmit = new Button("Submit");
+        addPropSubmit.setOnAction(e -> {
+            ArrayList<Owner> owners = new ArrayList<>();
+            for (String owner : addPropNames.getText().split(","))
+                owners.add(new Owner(owner));
+            try {
+                filer.add(new Property(owners, new Address(addPropFirstLine.getText(), addPropSecondLine.getText(), addPropCity.getText(), addPropCounty.getText(), addPropCountry.getText()),
+                        addPropEircode.getText(), Double.parseDouble(addPropMarketValue.getText()), addPropCategory.getValue().toString(), Boolean.parseBoolean(addPropPrivateRes.getValue().toString())));
+                mainStage.setScene(ownerMenu);
+            } catch (Exception a) {
+                ErrorWindow.display("Invalid property info");
+            }
+        });
+        Button addPropQuit = new Button("Quit");
+        addPropQuit.setOnAction(e->mainStage.setScene(mainMenu));
+        VBox addPropertyFields = new VBox();
+        addPropertyFields.getChildren().addAll(new Label("Names(comma separated)"), addPropNames, new Label("First Line"), addPropFirstLine, new Label("Second Line"), addPropSecondLine,
+                new Label("City"), addPropCity, new Label("County"), addPropCounty, new Label("Country"), addPropCountry, new Label("Eircode"), addPropEircode, new Label("Market Value"),
+                addPropMarketValue, new Label("Category"), addPropCategory, new Label("Private Residence"), addPropPrivateRes, addPropSubmit, addPropQuit);
+        addPropertyFields.setSpacing(10);
+        addPropertyFields.setPadding(new Insets(10, 10, 10, 10));
+        VBox addPropertyParent = new VBox();
+        addPropertyParent.getChildren().add(addPropertyFields);
+        addPropertyMenu = new Scene(addPropertyParent, windowSizeX, windowSizeY * 1.5);
 
         //Register A Property - Done
         Label names = new Label("Owners (Comma seperated)");
@@ -138,8 +174,8 @@ public class Menu_GUI extends Application {
         VBox AddPropertyParent = new VBox();
         Label AddPropertyLabel = new Label("Fill All Fields");
         AddPropertyParent.getChildren().addAll(AddPropertyLabel, AddPropertyFields);
-        addPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
-        
+        regPropertyMenu = new Scene(AddPropertyParent, 1000, 1000);
+
 
         //Get Tax Due - Done
         this.taxYear = new TextField();
@@ -283,20 +319,20 @@ public class Menu_GUI extends Application {
         ObservableList<Property> props = FXCollections.observableArrayList(propertyList);
         ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
         Button quit = new Button("Quit");
-        quit.setOnAction(e->window.setScene(ownerMenu));
-        
+        quit.setOnAction(e -> window.setScene(ownerMenu));
+
         BorderPane propertyInfoWindow = new BorderPane();
         VBox choiceVBox = new VBox();
         choiceVBox.getChildren().addAll(propertyChoiceBox, quit);
         choiceVBox.setPrefWidth(300);
         choiceVBox.setPadding(new Insets(10, 100, 10, 50));
         choiceVBox.setSpacing(6);
-        
+
         BorderPane propertyBox = new BorderPane();
         VBox propertyInfo = new VBox();
         VBox propertyTaxInfo = new VBox();
         propertyBox.setTop(propertyInfo);
-        
+
         propertyChoiceBox.setOnAction(e -> {
             propertyBox.setTop(getAddressVBox(propertyChoiceBox.getValue()));
             propertyBox.setCenter(new VBox());
@@ -343,16 +379,16 @@ public class Menu_GUI extends Application {
         });
 
         paymentInfo.setPromptText("Payment amount");
-        paymentInfo.setOnAction(e->{
-            try{
-                filer.makeTaxPayment(propertyChoiceBox.getValue(),propertyChoiceBox.getValue().getPropertyTax(propertyTaxChoiceBox.getValue()),Double.parseDouble(paymentInfo.getText()));
-                ErrorWindow.display("Payment of "+ Double.parseDouble(paymentInfo.getText())+ "made");
+        paymentInfo.setOnAction(e -> {
+            try {
+                filer.makeTaxPayment(propertyChoiceBox.getValue(), propertyChoiceBox.getValue().getPropertyTax(propertyTaxChoiceBox.getValue()), Double.parseDouble(paymentInfo.getText()));
+                ErrorWindow.display("Payment of " + Double.parseDouble(paymentInfo.getText()) + "made");
                 window.setScene(ownerMenu);
-            }catch(Exception a){
+            } catch (Exception a) {
                 ErrorWindow.display("Invalid payment amount");
             }
         });
-        quit.setOnAction(e->window.setScene(ownerMenu));
+        quit.setOnAction(e -> window.setScene(ownerMenu));
         propertyInfoWindow.setLeft(choiceVBox);
         propertyInfoWindow.setCenter(propertyBox);
         Scene test = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
@@ -383,7 +419,7 @@ public class Menu_GUI extends Application {
         Label isPrivateRes = new Label(prop.isPrivateRes() + "");
         isPrivateRes.setFont(new Font("", fontSize));
         result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
-        result.setPadding(new Insets(20,20,20,0));
+        result.setPadding(new Insets(20, 20, 20, 0));
         result.setSpacing(10);
         result.setAlignment(Pos.TOP_LEFT);
         return result;
@@ -393,13 +429,13 @@ public class Menu_GUI extends Application {
         VBox result = new VBox();
         Label yearInfo = new Label("Year: " + tax.getYear());
         yearInfo.setFont(new Font("", 25));
-        Label paymentData = new Label("Payments made: "+tax.getPaymentsString());
+        Label paymentData = new Label("Payments made: " + tax.getPaymentsString());
         paymentData.setFont(new Font("", 25));
-        Label totalPaid=new Label("Total Paid:"+tax.getPaymentTotal());
+        Label totalPaid = new Label("Total Paid:" + tax.getPaymentTotal());
         totalPaid.setFont(new Font("", 25));
-        Label totalDue=new Label("Total Due: "+(tax.getTax()-tax.getPaymentTotal()));
+        Label totalDue = new Label("Total Due: " + (tax.getTax() - tax.getPaymentTotal()));
         totalDue.setFont(new Font("", 25));
-        result.getChildren().addAll(yearInfo, paymentData,totalPaid,totalDue);
+        result.getChildren().addAll(yearInfo, paymentData, totalPaid, totalDue);
         return result;
     }
 

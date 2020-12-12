@@ -103,12 +103,6 @@ public class Property {
         return result;
     }
 
-//    @Override
-//    public boolean equals(Object prop) {
-//        pr
-//        return toString().equals(prop.toString());
-//    }
-
     public String generalString() {
         return address.toString().replaceAll(",", "\n") + "\n" + eircode + "\n" +
                 "MarketValue: " + marketVal + "\n" + "Private Residence: " + isPrivateRes + "\n" + "Category: " + category + "\nTax due: " + getTaxDue();
