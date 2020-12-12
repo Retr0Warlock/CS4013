@@ -66,7 +66,6 @@ public class Menu_GUI extends Application {
         option1.setPrefWidth(mainMenu.getWidth());
         option2.setPrefWidth(mainMenu.getWidth());
         option3.setPrefWidth(mainMenu.getWidth());
-
         header.setFont(new Font("", 35));
 
 
