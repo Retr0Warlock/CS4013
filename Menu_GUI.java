@@ -374,12 +374,12 @@ public class Menu_GUI extends Application {
         quit.setOnAction(e->window.setScene(ownerMenu));
         propertyInfoWindow.setLeft(choiceVBox);
         propertyInfoWindow.setCenter(propertyBox);
-        Scene test = new Scene(propertyInfoWindow, 900, 500);
+        Scene test = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
         window.setScene(test);
     }
 
     public VBox getAddressVBox(Property prop) {
-        int fontSize = 25;
+        int fontSize = 15;
         VBox result = new VBox();
         Label owners = new Label(prop.getOwners().toString());
         owners.setFont(new Font("", fontSize));
@@ -402,8 +402,9 @@ public class Menu_GUI extends Application {
         Label isPrivateRes = new Label(prop.isPrivateRes() + "");
         isPrivateRes.setFont(new Font("", fontSize));
         result.getChildren().addAll(owners, firstLine, secondLine, city, county, country, eircode, marketvalue, category, isPrivateRes);
-        result.setPadding(new Insets(20,20,20,20));
+        result.setPadding(new Insets(20,20,20,0));
         result.setSpacing(10);
+        result.setAlignment(Pos.TOP_LEFT);
         return result;
     }
 
