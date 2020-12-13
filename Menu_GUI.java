@@ -17,6 +17,9 @@ import java.util.*;
 import java.io.*;
 import java.time.Year;
 
+/**
+ * GUI program for allowing owners to register, view and to pay taxes on their properties and allows admins to view tax data per property or owner and also general tax statistics.
+ */
 public class Menu_GUI extends Application {
     int windowSizeX = 700;
     int windowSizeY = 500;
