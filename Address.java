@@ -79,7 +79,7 @@ public class Address {
     }
 
     /**
-     * Checks if two addresses are the same.
+     * Checks if two addresses are the same. 
      */
     @Override
     public boolean equals(Object obj){
