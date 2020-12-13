@@ -8,9 +8,10 @@ General -
 
 Josh Shires - 19274386
 	Class
-	Menu GUI
-		getTaxDue - 100%
-		generalTaxStats - 100%
+		Menu ClI - 10%
+		Menu GUI
+			getTaxDue - 100%
+			generalTaxStats - 100%
 	
 	File
 		CRC - 50%
@@ -22,6 +23,7 @@ Josh Shires - 19274386
 Ben Fagan - 19271085
 	Class
 		Owner - 100%
+		Menu_CLI - 10%
 		Menu_GUI
 			overdueTax - 100%
 			searchTaxData - 100%
@@ -34,6 +36,7 @@ Ben Fagan - 19271085
 		CRC - 50%
 		UML - 50%
 		JavaDoc - 100%
+		Menu_GUI appearance - 50%
 
 Adam Ryan - 16176154
 	Class
@@ -45,3 +48,4 @@ Adam Ryan - 16176154
 	
 	Misc
 		Merging new verison - 100%
+		GUI Appearance - 50%
