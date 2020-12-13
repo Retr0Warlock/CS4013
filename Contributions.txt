@@ -3,7 +3,7 @@ All code was contributed to so equally as a group that it is entirely unclear as
 General -
 	Josh - 33%
 	Ben - 33%
-	Adam - 35%
+	Adam - 33%
 
 
 Josh Shires - 19274386
@@ -37,15 +37,11 @@ Ben Fagan - 19271085
 
 Adam Ryan - 16176154
 	Class
-		Menu_CLI - 100%
+		Menu_CLI - 80%
 		Menu GUI
-			MainMenu - 100%
-			AdminMenu - 100%
+			mainMenu - 100%
 			ownerMenu - 100%
-			getAddressVBox -100%
-			getTaxInfoVBox -100%
-			getPropertyScene -100%
-			CSS - 100%
+		PropertyFiler - 100%
 	
 	Misc
 		Merging new verison - 100%
