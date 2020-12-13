@@ -75,12 +75,14 @@ public class Property {
     }
 
     /**
-     * Given a year it adds that year as a taxable year if its not already on record.(Called on start of every year)
-     * @param year year wished to be taxed
+     * updates the tax, to be called on January 1st every year
      */
-    public void setTaxYear(Year year){
-        if(!getPropertyTax(year).equals(null))
-            propertyTaxes.add(new PropertyTax(year,calcPropertyTax()));
+    public void updateTax(){
+        if(!getPropertyTax(Year.now()).equals(null))
+            propertyTaxes.add(new PropertyTax(Year.now(),calcPropertyTax()));
+        for(PropertyTax propertyTax:propertyTaxes)
+            if(propertyTax.getTax()-propertyTax.getPaymentTotal()!=0)
+                propertyTax.compoundTax();
     }
 
     /**

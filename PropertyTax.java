@@ -24,6 +24,14 @@ public class PropertyTax {
     }
 
     /**
+     * compound tax owed by seven percent
+     */
+    public void compoundTax(){
+        if(tax-getPaymentTotal()!=0)
+            tax=tax*1.07;
+    }
+
+    /**
      * @param tax the tax to be compared
      * @return if a propery tax info matches the same year, tax payments made and total tax owed returns true
      */
