@@ -53,7 +53,12 @@ public class Menu_GUI extends Application {
         option1.setOnAction(e -> mainStage.setScene(ownerMenu));
         Button option2 = new Button("Admin");
         option2.setOnAction(e -> mainStage.setScene(adminMenu));
-        QuitHandler quitHandle = new QuitHandler();
+        EventHandler quitHandle = new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                System.exit(1);
+            }
+        };
         Button option3 = new Button("Quit");
 
         option3.setOnAction(quitHandle);
@@ -80,9 +85,9 @@ public class Menu_GUI extends Application {
         Button ownerButton2 = new Button("My Properties");
         ownerButton2.setPrefWidth(ownerMenu.getWidth());
         ownerButton2.setOnAction(e -> {
-            propertyArrayList = filer.search(new Owner(TextPromptWindow.display("Enter Name")));
+            propertyArrayList = filer.search(new Owner(textPromptWindow("Enter Name")));
             if (propertyArrayList.size() == 0) {
-                ErrorWindow.display("No properties with that owner name");
+                errorWindow("No properties with that owner name");
                 mainStage.setScene(ownerMenu);
             } else {
                 getPropertyScene(propertyArrayList);
@@ -126,7 +131,7 @@ public class Menu_GUI extends Application {
                         addPropEircode.getText(), Double.parseDouble(addPropMarketValue.getText()), addPropCategory.getValue().toString(), Boolean.parseBoolean(addPropPrivateRes.getValue().toString())));
                 mainStage.setScene(ownerMenu);
             } catch (Exception a) {
-                ErrorWindow.display("Invalid property info");
+                errorWindow("Invalid property info");
             }
         });
         Button addPropQuit = new Button("Quit");
@@ -424,7 +429,7 @@ public class Menu_GUI extends Application {
             String temp = "";
             for (PropertyTax tax : propertyChoiceBox.getValue().getPropertyTaxes()) //display tax data for the property
                 temp = temp + (tax.getSummary() + "\n");
-            ErrorWindow.display(temp);
+            errorWindow(temp);
             window.setScene(adminMenu);
         });
         propertyInfoWindow.setLeft(choiceVBox);
@@ -471,10 +476,10 @@ public class Menu_GUI extends Application {
         paymentInfo.setOnAction(e -> {
             try {
                 filer.makeTaxPayment(propertyChoiceBox.getValue(), propertyChoiceBox.getValue().getPropertyTax(propertyTaxChoiceBox.getValue()), Double.parseDouble(paymentInfo.getText()));
-                ErrorWindow.display("Payment of " + Double.parseDouble(paymentInfo.getText()) + "made");
+                errorWindow("Payment of " + Double.parseDouble(paymentInfo.getText()) + "made");
                 window.setScene(ownerMenu);
             } catch (Exception a) {
-                ErrorWindow.display("Invalid payment amount");
+                errorWindow("Invalid payment amount");
             }
         });
         quit.setOnAction(e -> window.setScene(ownerMenu));
@@ -605,22 +610,13 @@ public class Menu_GUI extends Application {
         }
         filer.add(newProp);
     }
-}
 
-class QuitHandler implements EventHandler<ActionEvent> {
     /**
-     * Closes the GUI from the quit button on the user selection menu.
+     * Displays a window prompting user for text
+     * @param prompt the message to be displayed on screen
+     * @return the string supplied by user in the text box
      */
-    public void handle(ActionEvent e) {
-        System.exit(0);
-    }
-}
-
-class TextPromptWindow {
-    /**
-     * Displays a window as a text propmt.
-     */
-    public static String display(String prompt) {
+    public static String textPromptWindow(String prompt) {
         Stage textPromptWindow = new Stage();
         textPromptWindow.initModality(Modality.APPLICATION_MODAL);
         textPromptWindow.setTitle(prompt);
@@ -654,13 +650,11 @@ class TextPromptWindow {
 
         return userInput.getText();
     }
-}
 
-class ErrorWindow {
     /**
      * Displays a window with error message when an error occurs.
      */
-    public static void display(String errorMessage) {
+    public static void errorWindow(String errorMessage) {
         Stage errorWindow = new Stage();
         errorWindow.initModality(Modality.APPLICATION_MODAL);
         errorWindow.setTitle("Error");
@@ -674,3 +668,4 @@ class ErrorWindow {
         errorWindow.show();
     }
 }
+
