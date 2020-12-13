@@ -1,0 +1,18 @@
+Compiling and Running - Command Line Interface Version of the Project.
+
+1. Open a command prompt window and go to the directory where you saved the java program.
+2. Type 'javac Owner.java Address.java Property.java PropertyFiler.java PropertyTax.java 
+	Menu_CLI.java' and press enter to compile your code.
+3. Type 'java Menu_CLI' to run the program.
+
+Compiling and Running - General User Interface Version of the Project.
+
+1. Open a command prompt window and go to the directory where you saved the java program.
+2. Type 'javac -cp "C:\Program Files (x86)\Java\jre1.8.0_261\lib\ext\jfxrt.jar" Owner.java
+	Address.java Property.java PropertyFiler.java PropertyTax.java Menu_CLI.java Menu_GUI.java'
+	and press enter to compile your code. (Note: your Jfxrt.jar may be located elsewhere.)
+3. Type 'java -cp "C:\Program Files (x86)\Java\jre1.8.0_261\lib\ext\jfxrt.jar" Menu_GUI' to run the
+	program.
+
+Link to Github repository:
+https://github.com/Retr0Warlock/CS4013
