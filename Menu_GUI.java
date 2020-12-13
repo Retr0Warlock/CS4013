@@ -194,22 +194,43 @@ public class Menu_GUI extends Application {
 
 
         //AdminMenu - Done
+        BorderPane adminMenuParent = new BorderPane();
+        adminMenu = new Scene(adminMenuParent, windowSizeX, windowSizeY);
         Button AdminButton1 = new Button("Search Tax Data");
         AdminButton1.setOnAction(e -> mainStage.setScene(searchTaxMenu));
+        AdminButton1.setPrefWidth(adminMenu.getWidth());
         Button AdminButton2 = new Button("Overdue Tax");
         AdminButton2.setOnAction(e -> mainStage.setScene(overdueTaxMenu));
+        AdminButton2.setPrefWidth(adminMenu.getWidth());
         Button AdminButton3 = new Button("General Tax Statistics");
         AdminButton3.setOnAction(e -> mainStage.setScene(generalStatsMenu));
+        AdminButton3.setPrefWidth(adminMenu.getWidth());
         Button AdminButton4 = new Button("Quit");
         AdminButton4.setOnAction(e -> mainStage.setScene(mainMenu));
+        AdminButton4.setPrefWidth(adminMenu.getWidth());
         HBox AdminMenuButtons = new HBox();
         AdminMenuButtons.getChildren().addAll(AdminButton1, AdminButton2, AdminButton3, AdminButton4);
         VBox AdminMenuParent = new VBox();
         Label AdminMenuLabel = new Label("Choose Admin menu option");
         AdminMenuParent.getChildren().addAll(AdminMenuLabel, AdminMenuButtons);
-        adminMenu = new Scene(AdminMenuParent, 500, 500);
-
+        
+        GridPane adminMenuButtons = new GridPane();
+        adminMenuButtons.add(AdminButton1, 1, 1);
+        adminMenuButtons.add(AdminButton2, 2, 1);
+        adminMenuButtons.add(AdminButton3, 3, 1);
+        adminMenuButtons.add(AdminButton4, 4, 1);
+        adminMenuButtons.setHgap(10);
+        adminMenuButtons.setVgap(10);
+        adminMenuButtons.setPadding(new Insets(10, 10, 100, 10));
+        adminMenuButtons.setAlignment(Pos.CENTER);
+        AdminMenuLabel.setFont(new Font("", 35));
+        adminMenuParent.setCenter(AdminMenuLabel);
+        adminMenuParent.setBottom(adminMenuButtons);
+        
+        
         //Search Tax Data - Done
+        BorderPane searchTaxMenuParent = new BorderPane();
+        searchTaxMenu = new Scene(searchTaxMenuParent, windowSizeX, windowSizeY);
         this.searchOwner = new TextField();
         Button searchForOwner = new Button("Search by Owner");
         searchForOwner.setOnAction(e -> searchTaxDataByName());
@@ -230,14 +251,37 @@ public class Menu_GUI extends Application {
         this.taxData = new Label("");
         Button searchQuit = new Button("Quit");
         searchQuit.setOnAction(e -> mainStage.setScene(adminMenu));
-        HBox searchTaxFields = new HBox();
-        searchTaxFields.getChildren().addAll(searchOwner, searchForOwner, firstline, firstLine, secondline, secondLine, city, this.city, county, this.county, country, this.country, searchForAddress, listAll, taxData, searchQuit);
-        VBox searchTaxParent = new VBox();
-        this.searchTaxLabel = new Label("");
-        searchTaxParent.getChildren().addAll(searchTaxLabel, searchTaxFields);
-        searchTaxMenu = new Scene(searchTaxParent, 500, 500);
-
+        
+        GridPane searchTaxFields = new GridPane();
+        searchTaxFields.add(searchOwner, 1, 1);
+        searchTaxFields.add(searchForOwner, 2, 1);
+        searchTaxFields.add(firstline, 1, 2);
+        searchTaxFields.add(firstLine, 2, 2);
+        searchTaxFields.add(secondline, 1, 3);
+        searchTaxFields.add(secondLine, 2, 3);
+        searchTaxFields.add(city, 1, 4);
+        searchTaxFields.add(this.city, 2, 4);
+        searchTaxFields.add(county, 1, 5);
+        searchTaxFields.add(this.county, 2, 5);
+        searchTaxFields.add(country, 1, 6);
+        searchTaxFields.add(this.country, 2, 6);
+        searchTaxFields.add(searchForAddress, 3, 6);
+        searchTaxFields.add(listAll, 1, 7);
+        searchTaxFields.add(searchQuit, 1, 8);
+        
+        searchTaxFields.setHgap(10);
+        searchTaxFields.setVgap(10);
+        searchTaxFields.setPadding(new Insets(10, 10, 100, 10));
+        searchTaxFields.setAlignment(Pos.CENTER);        
+        searchTaxMenuParent.setLeft(searchTaxFields);
+        
+        
+        
+        
+        
         //Overdue Tax - Done
+        BorderPane overdueTaxMenuParent = new BorderPane();
+        overdueTaxMenu = new Scene(overdueTaxMenuParent, windowSizeX, windowSizeY);
         Button searchOverdue = new Button("Search");
         searchOverdue.setOnAction(e -> OverDueTax());
         Label overduerouting = new Label("Routing Key (Leave Blank to Ignore)");
@@ -247,27 +291,45 @@ public class Menu_GUI extends Application {
         this.totalOverdue = new Label("");
         Button overdueQuit = new Button("Quit");
         overdueQuit.setOnAction(e -> mainStage.setScene(adminMenu));
-        HBox overdueTaxFields = new HBox();
-        overdueTaxFields.getChildren().addAll(overduerouting, overdueRouting, overdueyear, overdueYear, searchOverdue, totalOverdue, overdueQuit);
-        VBox overdueTaxParent = new VBox();
-        this.overdueTaxLabel = new Label("");
-        overdueTaxParent.getChildren().addAll(overdueTaxLabel, overdueTaxFields);
-        overdueTaxMenu = new Scene(overdueTaxParent, 500, 500);
+        
+        GridPane overdueTaxFields = new GridPane();
+        overdueTaxFields.add(overduerouting, 1, 1);
+        overdueTaxFields.add(overdueRouting, 2, 1);
+        overdueTaxFields.add(overdueyear, 1, 2);
+        overdueTaxFields.add(overdueYear, 2, 2);
+        overdueTaxFields.add(searchOverdue, 1, 3);
+        overdueTaxFields.add(totalOverdue, 2, 3);
+        overdueTaxFields.add(overdueQuit, 1, 4);
+                
+        overdueTaxFields.setHgap(10);
+        overdueTaxFields.setVgap(10);
+        overdueTaxFields.setPadding(new Insets(10, 10, 100, 10));
+        overdueTaxFields.setAlignment(Pos.CENTER);        
+        overdueTaxMenuParent.setLeft(overdueTaxFields);
 
         //General Tax Statistics - Done
+        BorderPane generalStatsMenuParent = new BorderPane();
+        generalStatsMenu = new Scene(generalStatsMenuParent, windowSizeX, windowSizeY);
         Button showStats = new Button("Show Statistics");
         showStats.setOnAction(e -> generalTaxStats());
         this.generalRouting = new TextField();
         generalTaxStats = new Label("");
         Button generalQuit = new Button("Quit");
         generalQuit.setOnAction(e -> mainStage.setScene(adminMenu));
-        HBox generalStatsFields = new HBox();
-        generalStatsFields.getChildren().addAll(generalRouting, showStats, generalTaxStats, generalQuit);
-        VBox generalStatsParent = new VBox();
         this.generalStatsLabel = new Label("Routing Key (Leave Blank to ignore)");
-        generalStatsParent.getChildren().addAll(generalStatsLabel, generalStatsFields);
-        generalStatsMenu = new Scene(generalStatsParent, 500, 500);
-
+        
+        GridPane generalStatsFields = new GridPane();
+        generalStatsFields.add(generalStatsLabel, 1, 1);
+        generalStatsFields.add(generalRouting, 2, 1);
+        generalStatsFields.add(showStats, 1, 2);
+        generalStatsFields.add(generalTaxStats, 2, 2);
+        generalStatsFields.add(generalQuit, 1, 3);
+                
+        generalStatsFields.setHgap(10);
+        generalStatsFields.setVgap(10);
+        generalStatsFields.setPadding(new Insets(10, 10, 100, 10));
+        generalStatsFields.setAlignment(Pos.CENTER);        
+        generalStatsMenuParent.setLeft(generalStatsFields);
 
         mainStage.setScene(mainMenu);
         mainStage.show();
