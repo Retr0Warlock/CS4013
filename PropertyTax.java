@@ -2,7 +2,7 @@ import java.time.Year;
 import java.util.ArrayList;
 
 /**
- * Used for calculating property tax of a given property.
+ * Holds property tax info for a given year. Static methods for calculating how much tax is owed on a property.
  */
 public class PropertyTax {
     private double tax;
@@ -23,6 +23,10 @@ public class PropertyTax {
         return year;
     }
 
+    /**
+     * @param tax the tax to be compared
+     * @return if a propery tax info matches the same year, tax payments made and total tax owed returns true
+     */
     public boolean equals(PropertyTax tax){
         return toString().equals(tax.toString());
     }
@@ -35,6 +39,11 @@ public class PropertyTax {
         this.tax = tax;
     }
 
+    /**
+     * calculates the tax owed for a given property. Used rates() and categories().
+     * @param property the property tax to be taxed
+     * @return the amount of tax owed on that property
+     */
     public static double calculate(Property property) {
         double propertyTax = 0;
         propertyTax = propertyTax + 100 + rates(property) + categories(property);
