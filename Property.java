@@ -3,6 +3,10 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A property contains an address,eircode,marketValue,category,boolean if its a private residence and property tax info
+ * on a yearly basis.
+ */
 public class Property {
     private ArrayList<Owner> owners = new ArrayList<Owner>();
     private Address address;
@@ -28,7 +32,7 @@ public class Property {
     /**
      * Constructor for a String in the same format as the toString method.
      *
-     * @param o String "no.ofowners,owners...,address...,eircode,marketvalue,category,is property a private residence(true/false,PropertyTax.toString())"
+     * @param o String "no.of owners,owners comma separated,address comma separated(4 lines),eircode,marketvalue,category,is property a private residence(true/false),PropertyTax info...)"
      */
     public Property(String o) {
         String[] oArr = o.split(",");
@@ -51,10 +55,18 @@ public class Property {
         return owners;
     }
 
+    /**
+     * @return ArrayList of PropertyTax for every year property was registered.
+     */
     public ArrayList<PropertyTax> getPropertyTaxes() {
         return propertyTaxes;
     }
 
+    /**
+     * returns the propertyTax of the year supplied
+     * @param year the year of the property tax
+     * @return the property tax of the given year
+     */
     public PropertyTax getPropertyTax(Year year) {
         for (PropertyTax tax : propertyTaxes)
             if (tax.getYear().equals(year))
@@ -62,6 +74,18 @@ public class Property {
         return null;
     }
 
+    /**
+     * Given a year it adds that year as a taxable year if its not already on record.(Called on start of every year)
+     * @param year year wished to be taxed
+     */
+    public void setTaxYear(Year year){
+        if(!getPropertyTax(year).equals(null))
+            propertyTaxes.add(new PropertyTax(year,calcPropertyTax()));
+    }
+
+    /**
+     * @return the 3 character routing key associated with the property
+     */
     public String getRoutingKey() {
         return eircode.substring(0, 3);
     }
@@ -96,6 +120,9 @@ public class Property {
         return PropertyTax.calculate(this);
     }
 
+    /**
+     * Returns total tax due for this property
+     */
     public double getTaxDue() {
         double result = 0;
         for (PropertyTax taxes : propertyTaxes)
@@ -103,11 +130,19 @@ public class Property {
         return result;
     }
 
+    /**
+     * Returns a string formatted in more human readable format but with less info that toString()
+     * @return human readable string containing property info
+     */
     public String generalString() {
         return address.toString().replaceAll(",", "\n") + "\n" + eircode + "\n" +
                 "MarketValue: " + marketVal + "\n" + "Private Residence: " + isPrivateRes + "\n" + "Category: " + category + "\nTax due: " + getTaxDue();
     }
 
+    /**
+     * Returns comma separated info relating to the property
+     * @return "how many owners,ownername1,ownername2...,addressline1,...,addressline4,eircode,marketVal,category,isPrivateResidece(true/false),tax year,ammount of payments,total tax for that year,tax year2...
+     */
     @Override
     public String toString() {
         String result = owners.size() + ",";
