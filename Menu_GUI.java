@@ -31,7 +31,11 @@ public class Menu_GUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
+    /**
+     * Initalizes the GUI and displays it.
+     * Stores the display settings for each menu.
+     */
     @Override
     public void start(Stage mainStage) {
         window = mainStage;
@@ -335,13 +339,21 @@ public class Menu_GUI extends Application {
         mainStage.show();
     }
 
-    //Search Tax Data
+    
+    /**
+     * Method for - Search Tax Data
+     * Gets List of Tax data for all properties
+     */
     public void searchTaxDataAllProp() {
         ArrayList<Property> properties;
         properties = filer.read();
         chooseProperty(properties);
     }
 
+    /**
+     * Method for - Search Tax Data
+     * Gets List of Tax data for all properties belonging to a certain owner.
+     */
     public void searchTaxDataByName() {
         ArrayList<Property> properties;
         String name = searchOwner.getText();
@@ -349,6 +361,10 @@ public class Menu_GUI extends Application {
         chooseProperty(properties);
     }
 
+    /**
+     * Method for - Search Tax Data
+     * Gets List of Tax data for all properties at a certain address.
+     */
     public void searchTaxDataByAddress() {
         ArrayList<Property> properties;
         String firstline = this.firstLine.getText();
@@ -361,7 +377,10 @@ public class Menu_GUI extends Application {
     }
 
 
-    //Overdue Tax
+    /**
+     * Method for - Overdue Tax
+     * Gets List of Overdue Tax for properties
+     */
     public void OverDueTax() {
         String searchCode = overdueRouting.getText();
         String yearSearch = overdueYear.getText();
@@ -376,7 +395,11 @@ public class Menu_GUI extends Application {
                         overDueTax += tax.getTax() - tax.getPaymentTotal();
         totalOverdue.setText("Total tax overdue: " + overDueTax);
     }
-
+    
+    /**
+     * Method for - Search Tax Data
+     * Gets List of properties for user to choose from. 
+     */
     public void chooseProperty(ArrayList<Property> propertyList) {
         ObservableList<Property> props = FXCollections.observableArrayList(propertyList);
         ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
@@ -410,6 +433,10 @@ public class Menu_GUI extends Application {
         window.setScene(TaxData);
     }
 
+    /**
+     * Method for - List Properties/Pay Tax
+     * Gets List of properties for user to choose from and pay tax.
+     */
     public void getPropertyScene(ArrayList<Property> properties) {
         ObservableList<Property> props = FXCollections.observableArrayList(properties);
         ChoiceBox<Property> propertyChoiceBox = new ChoiceBox<>(props);
@@ -456,7 +483,10 @@ public class Menu_GUI extends Application {
         Scene test = new Scene(propertyInfoWindow, windowSizeX, windowSizeY);
         window.setScene(test);
     }
-
+    
+    /**
+     * Displays the address selected in the ChoiceBox. 
+     */
     public VBox getAddressVBox(Property prop) {
         int fontSize = 15;
         VBox result = new VBox();
@@ -487,6 +517,9 @@ public class Menu_GUI extends Application {
         return result;
     }
 
+    /**
+     * Displays the Tax info of the chosen address and year.
+     */
     public VBox getTaxInfoVBox(PropertyTax tax) {
         VBox result = new VBox();
         Label yearInfo = new Label("Year: " + tax.getYear());
@@ -501,7 +534,10 @@ public class Menu_GUI extends Application {
         return result;
     }
 
-    //generalTaxStats
+    
+    /**
+     * Returns general statistics of all properties/ properties of a certain routing code.
+     */
     public void generalTaxStats() {
         double totalTaxPaid = 0;
         ArrayList<Property> properties = filer.search(generalRouting.getText());
@@ -516,7 +552,10 @@ public class Menu_GUI extends Application {
         generalTaxStats.setText("Total tax paid: " + totalTaxPaid + "\nAverage tax paid: " + averageTaxPaid + "\nNumber and percentage of property taxes fully paid: " + noPropTaxPaid + noPropTaxPaid / properties.size() + "%");
     }
 
-    //Get Tax Due
+    
+    /**
+     * Returns the tax due on a chosen property.
+     */
     public void getTaxDue() {
         String choice = this.Names.getText();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
@@ -538,7 +577,10 @@ public class Menu_GUI extends Application {
         getTaxYear.setText("Total due for " + yearChoice + ": " + annualTotalDue);
     }
 
-    //Register A Property
+    
+    /**
+     * Adds a property to the properties.csv file.
+     */
     public void AddProp() {
         ArrayList<Owner> owners = new ArrayList<Owner>();
         String names = this.Names.getText();
@@ -566,12 +608,18 @@ public class Menu_GUI extends Application {
 }
 
 class QuitHandler implements EventHandler<ActionEvent> {
+    /**
+     * Closes the GUI from the quit button on the user selection menu.
+     */
     public void handle(ActionEvent e) {
         System.exit(0);
     }
 }
 
 class TextPromptWindow {
+    /**
+     * Displays a window as a text propmt.
+     */
     public static String display(String prompt) {
         Stage textPromptWindow = new Stage();
         textPromptWindow.initModality(Modality.APPLICATION_MODAL);
@@ -609,6 +657,9 @@ class TextPromptWindow {
 }
 
 class ErrorWindow {
+    /**
+     * Displays a window with error message when an error occurs.
+     */
     public static void display(String errorMessage) {
         Stage errorWindow = new Stage();
         errorWindow.initModality(Modality.APPLICATION_MODAL);
