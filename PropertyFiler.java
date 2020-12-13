@@ -45,6 +45,11 @@ public class PropertyFiler {
         return propertyList;
     }
 
+    /**
+     * Searches the file for a given property owner and returns all properties owned
+     * @param owner the owner to be searched
+     * @return the ArrayList of properties owned by owner
+     */
     public ArrayList<Property> search(Owner owner) {
         ArrayList<Property> result = new ArrayList<Property>();
         for (Property prop : read()) {
@@ -57,6 +62,10 @@ public class PropertyFiler {
         return result;
     }
 
+    /**
+     * rewrites the file with new list of properties
+     * @param properties the list of new properties that will overwrite the file
+     */
     public void rewrite(ArrayList<Property> properties) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -68,6 +77,13 @@ public class PropertyFiler {
         }
     }
 
+    /**
+     * Allows a tax payment to be made for a given year on a given property.
+     * @param prop the property that is taxed
+     * @param taxYear the tax year to be paid
+     * @param payment the payment amount
+     * @throws IllegalArgumentException if payment amount is invalid
+     */
     public void makeTaxPayment(Property prop, PropertyTax taxYear, double payment) throws IllegalArgumentException{
         ArrayList<Property> store = read();
         for (Property property : store)
@@ -78,6 +94,11 @@ public class PropertyFiler {
         rewrite(store);
     }
 
+    /**
+     * searches file for properties under a given address
+     * @param address the given address
+     * @return List of properties under an address
+     */
     public ArrayList<Property> search(Address address) {
         ArrayList<Property> result = new ArrayList<>();
         for (Property prop : read())
@@ -86,6 +107,11 @@ public class PropertyFiler {
         return result;
     }
 
+    /**
+     * searches all properties on file that have a given routing key
+     * @param routingKey the routing key to be searched
+     * @return list of properties on file that have the same routing key
+     */
     public ArrayList<Property> search(String routingKey) {
         if (routingKey.equals(""))
             return read();
