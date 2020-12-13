@@ -44,6 +44,12 @@ Adam Ryan - 16176154
 		Menu GUI
 			mainMenu - 100%
 			ownerMenu - 100%
+				+ addPropertyMenu
+				+ getPropertyScene
+					getTaxInfoVBox
+					getAddressVBox
+			TextPropmptWindow
+			ErrorWindow
 		PropertyFiler - 100%
 	
 	Misc
