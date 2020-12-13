@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * A command line interface that allows a property owner to register, view and pay taxes on properties and allows
+ * admins of the system to view all overdue tax and general tax info per property or owner.
+ */
 public class Menu_CLI {
     private final PropertyFiler filer = new PropertyFiler();
 
@@ -13,6 +17,9 @@ public class Menu_CLI {
         a.run();
     }
 
+    /**
+     * Method called to start the program
+     */
     public void run() {
         Scanner in = new Scanner(System.in);
         boolean quit = false;
@@ -40,6 +47,9 @@ public class Menu_CLI {
         }
     }
 
+    /**
+     * adminMenu of the command line interface
+     */
     public void adminMenu() {
         Scanner in = new Scanner(System.in);
         boolean quit = false;
@@ -125,6 +135,9 @@ public class Menu_CLI {
         }
     }
 
+    /**
+     * owner menu of the command line interface
+     */
     public void ownerMenu() {
         Scanner in = new Scanner(System.in);
         boolean quit = false;
@@ -150,6 +163,10 @@ public class Menu_CLI {
         }
     }
 
+    /**
+     * Displays list of properties when supplied a valid property owner name
+     * @throws Exception when invalid input is supplied
+     */
     public void myPropertiesMenu() throws Exception {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter your name: ");
@@ -200,6 +217,11 @@ public class Menu_CLI {
     }
 
 
+    /**
+     * displays list of taxed years on a property and allows the user to select one
+     * @param taxes ArrayList containing all taxable years on a property
+     * @return the chosen tax info of a taxable year
+     */
     public PropertyTax chooseTax(ArrayList<PropertyTax> taxes) {
         Scanner in = new Scanner(System.in);
         System.out.println("Choose which year");
@@ -209,6 +231,11 @@ public class Menu_CLI {
         return taxes.get(Integer.parseInt(in.nextLine()) - 1);
     }
 
+    /**
+     * command line interface allowing the registration of properties
+     * @return the newly created property
+     * @throws InvalidObjectException if invalid input is entered
+     */
     public Property createProperty() throws InvalidObjectException {
         Scanner in = new Scanner(System.in);
         try {
@@ -247,6 +274,10 @@ public class Menu_CLI {
         }
     }
 
+    /**
+     * allows the creation of an address
+     * @return the created address
+     */
     public Address createAddress() {
         Scanner in = new Scanner(System.in);
         System.out.print("\t\t\tAddress \nFirstLine: ");
@@ -262,6 +293,11 @@ public class Menu_CLI {
         return new Address(firstLine, secondLine, city, county, country);
     }
 
+    /**
+     * prints a list of properties and allows the user to select one via the command line
+     * @param propertyList the list of properties to be chosen from
+     * @return the chosen property
+     */
     public Property chooseProperty(ArrayList<Property> propertyList) {
         System.out.println();
         int index = 1;
