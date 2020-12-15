@@ -1,5 +1,4 @@
 import java.io.InvalidObjectException;
-import java.text.ParseException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -156,24 +155,29 @@ public class Menu_CLI {
                     case 3:
                         quit = true;
                         break;
+                    default:
+                        throw new IllegalArgumentException("Enter number 1-3");
                 }
+            } catch (InvalidObjectException | IllegalArgumentException a) {
+                System.out.println(a.getMessage());
             } catch (Exception a) {
-                a.printStackTrace();
+                System.out.println("Invalid input");
             }
         }
     }
 
     /**
      * Displays list of properties when supplied a valid property owner name
-     * @throws Exception when invalid input is supplied
+     *
+     * @throws IllegalArgumentException when when invalid input is supplied
      */
-    public void myPropertiesMenu() throws Exception {
+    public void myPropertiesMenu() throws IllegalArgumentException {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter your name: ");
         String choice = in.nextLine();
         ArrayList<Property> ownedProperties = filer.search(new Owner(choice));
         if (ownedProperties.size() == 0)
-            throw new Exception("No property owner with that name");
+            throw new IllegalArgumentException("No property owner with that name");
         boolean quit = false;
         while (!quit) {
             try {
@@ -209,16 +213,18 @@ public class Menu_CLI {
                         quit = true;
                         break;
                 }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             } catch (Exception a) {
-                System.out.println(a.toString());
+                System.out.println("Invalid input");
             }
         }
-
     }
 
 
     /**
      * displays list of taxed years on a property and allows the user to select one
+     *
      * @param taxes ArrayList containing all taxable years on a property
      * @return the chosen tax info of a taxable year
      */
@@ -233,6 +239,7 @@ public class Menu_CLI {
 
     /**
      * command line interface allowing the registration of properties
+     *
      * @return the newly created property
      * @throws InvalidObjectException if invalid input is entered
      */
@@ -276,6 +283,7 @@ public class Menu_CLI {
 
     /**
      * allows the creation of an address
+     *
      * @return the created address
      */
     public Address createAddress() {
@@ -295,6 +303,7 @@ public class Menu_CLI {
 
     /**
      * prints a list of properties and allows the user to select one via the command line
+     *
      * @param propertyList the list of properties to be chosen from
      * @return the chosen property
      */

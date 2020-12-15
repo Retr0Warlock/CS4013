@@ -16,7 +16,7 @@ public class PropertyFiler {
      */
     public void add(Property prop) {
         for (Property prop2 : read()) //if duplicate property already in file
-            if (prop.equals(prop2))
+            if (prop.toString().equals(prop2.toString()))
                 return;
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));

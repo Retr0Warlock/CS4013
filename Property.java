@@ -2,6 +2,8 @@ import java.io.InvalidObjectException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A property contains an address,eircode,marketValue,category,boolean if its a private residence and property tax info
@@ -16,11 +18,20 @@ public class Property {
     public static final String[] categoryList = {"City", "Large town", "Small town", "Village", "Countryside"};
     private boolean isPrivateRes;
     private ArrayList<PropertyTax> propertyTaxes = new ArrayList<PropertyTax>();
+    public static final String eircodeRegex = "[A-Z,0-9]{7}";
 
     public Property(ArrayList<Owner> owners, Address address, String eircode, double marketVal, String category, boolean isPrivateRes) throws InvalidObjectException {
         this.owners = owners;
+        for(Owner owner:owners)
+            if(owner.getFullName().equals(""))
+                throw new InvalidObjectException("Owner name must not contain a comma or be blank");
         this.address = address;
-        this.eircode = eircode.trim().toUpperCase();
+        eircode = eircode.replaceAll("\\s", "").toUpperCase();
+        if (!eircode.matches(eircodeRegex))
+            throw new InvalidObjectException("Eircode not valid");
+        this.eircode = eircode;
+        if (marketVal < 0)
+            throw new InvalidObjectException("MarketValue must be > 0");
         this.marketVal = marketVal;
         this.category = category;
         this.isPrivateRes = isPrivateRes;
@@ -64,6 +75,7 @@ public class Property {
 
     /**
      * returns the propertyTax of the year supplied
+     *
      * @param year the year of the property tax
      * @return the property tax of the given year
      */
@@ -77,11 +89,11 @@ public class Property {
     /**
      * updates the tax, to be called on January 1st every year
      */
-    public void updateTax(){
-        if(!getPropertyTax(Year.now()).equals(null))
-            propertyTaxes.add(new PropertyTax(Year.now(),calcPropertyTax()));
-        for(PropertyTax propertyTax:propertyTaxes)
-            if(propertyTax.getTax()-propertyTax.getPaymentTotal()!=0)
+    public void updateTax() {
+        if (!getPropertyTax(Year.now()).equals(null))
+            propertyTaxes.add(new PropertyTax(Year.now(), calcPropertyTax()));
+        for (PropertyTax propertyTax : propertyTaxes)
+            if (propertyTax.getTax() - propertyTax.getPaymentTotal() != 0)
                 propertyTax.compoundTax();
     }
 
@@ -134,6 +146,7 @@ public class Property {
 
     /**
      * Returns a string formatted in more human readable format but with less info that toString()
+     *
      * @return human readable string containing property info
      */
     public String generalString() {
@@ -143,6 +156,7 @@ public class Property {
 
     /**
      * Returns comma separated info relating to the property
+     *
      * @return "how many owners,ownername1,ownername2...,addressline1,...,addressline4,eircode,marketVal,category,isPrivateResidece(true/false),tax year,ammount of payments,total tax for that year,tax year2...
      */
     @Override
